@@ -20,6 +20,17 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public DriveTechnology GetActiveDriveTechnology(Dictionary<DriveTechnologyType, int> driveLevels)
 		{
+			if (!this.DriveTechnologies.Any())
+			{
+				return new DriveTechnology
+				{
+					BaseSpeed = 0,
+					FuelConsumption = 0,
+					MinLevelOfTechnologyTypeRequired = 0,
+					TechnologyType = DriveTechnologyType.Combustion
+				};
+			}
+
 			DriveTechnology bestAvailableDrive = this.DriveTechnologies[0];
 
 			for (int i = 1; i < this.DriveTechnologies.Count; i++)
