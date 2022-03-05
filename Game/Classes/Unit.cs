@@ -51,7 +51,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return this.Debris;
 		}
 
-		public int GetUnitResourcesCapacity()
+		public long GetUnitResourcesCapacity()
 		{
 			return this.ResourcesCapacity;
 		}

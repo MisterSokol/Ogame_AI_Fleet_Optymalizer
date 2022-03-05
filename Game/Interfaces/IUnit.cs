@@ -19,7 +19,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		void TakeHit(IUnit enemyUnit);
 		void RestoreShield();
 		Resources GetDebrisResources();
-		int GetUnitResourcesCapacity();
+		long GetUnitResourcesCapacity();
 		Resources GetUnitResourcesCost();
 		void Reset();
 	}

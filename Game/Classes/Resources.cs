@@ -71,7 +71,12 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return this.Metal + this.Crystal + this.Deuterium;
 		}
 
-		public Resources GetResourcesBasedOnCapacity(int attackerResourcesCapacity)
+		public int GetTotalWorth(IConfigurationData configuration)
+		{
+			return this.Metal + this.Crystal * configuration.CrystalPriceMultiplier + this.Deuterium * configuration.DeuteriumPriceMultiplier;
+		}
+
+		public Resources GetResourcesBasedOnCapacity(long attackerResourcesCapacity)
 		{
 			if (attackerResourcesCapacity >= this.GetTotal())
 			{

@@ -118,7 +118,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		{
 			var profitResources = simulationResult.AttackerAverageProfitResources - simulationResult.FuelConsumption;
 
-			return profitResources.GetTotal() * configuration.ProfitResourcesFitnessMultiplier;
+			return profitResources.GetTotalWorth(configuration) * configuration.ProfitResourcesFitnessMultiplier;
 		}
 
 		private int GetWinFitnessValue(IConfigurationData configuration, ISimulationResult simulationResult)

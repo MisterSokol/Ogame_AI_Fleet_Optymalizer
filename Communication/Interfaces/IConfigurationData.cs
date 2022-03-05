@@ -18,5 +18,7 @@
 		int FlightSpeedFitnessMultiplier { get; set; }
 		int AttackerToDefenderMoreThan3FleetRatioPentaltyPercentage { get; set; }
 		int AttackerToDefenderMoreThan5FleetRatioPentaltyPercentage { get; set; }
+		int DeuteriumPriceMultiplier { get; set; }
+		int CrystalPriceMultiplier { get; set; }
 	}
 }

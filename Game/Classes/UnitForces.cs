@@ -39,7 +39,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				.Aggregate((x, y) => x + y);
 		}
 
-		public int GetFleetResourcesCapacity()
+		public long GetFleetResourcesCapacity()
 		{
 			return this.aliveUnits.Sum(x => x.GetUnitResourcesCapacity());
 		}

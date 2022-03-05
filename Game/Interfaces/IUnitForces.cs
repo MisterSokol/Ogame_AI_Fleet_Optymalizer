@@ -13,7 +13,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		void HitButDoNotUpdate(IUnitForces defenderUnit);
 		Resources GetLostResources();
 		Resources GetDebrisResources();
-		int GetFleetResourcesCapacity();
+		long GetFleetResourcesCapacity();
 		void EndBattle();
 		void EndRound();
 		IUnit GetRandomAliveUnit();
