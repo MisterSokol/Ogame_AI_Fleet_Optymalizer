@@ -7,6 +7,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 	public class UnitGameData
 	{
 		public UnitType UnitType { get; set; }
+		public string Name { get; set; }
 		public int BaseHP { get; set; }
 		public int BaseShieldValue { get; set; }
 		public int BaseDamage { get; set; }

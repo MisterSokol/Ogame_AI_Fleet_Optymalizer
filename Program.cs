@@ -15,20 +15,21 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp
 		{
 			//CombatSimulationTest();
 
-			//var dataIOHandler = new DataIOHandler();
+			var dataIOHandler = new DataIOHandler();
 
-			//var input = dataIOHandler.GetInput();
-			//var configuration = dataIOHandler.GetConfiguration();
+			var input = dataIOHandler.GetInput();
+			var configuration = dataIOHandler.GetConfiguration();
+			var gameData = dataIOHandler.GetGameData();
 
 			var evolutionaryAlgorithm = new EvolutionaryAlgorithm();
 
-			var configuration = GetConfiguration();
-			var inputData = GetInputData();
-			var gameData = GetGameData();
+			//var configuration = GetConfiguration();
+			//var inputData = GetInputData();
+			//var gameData = GetGameData();
 
-			var output = evolutionaryAlgorithm.Process(configuration, inputData, gameData);
+			var output = evolutionaryAlgorithm.Process(configuration, input, gameData);
 
-			// dataIOHandler.SaveOutput(output);
+			dataIOHandler.SaveOutput(output);
 
 			Console.WriteLine(JsonConvert.SerializeObject(output));
 			Console.ReadLine();
@@ -87,7 +88,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp
 			};
 		}
 
-		private static Communication.Interfaces.IInputPlayerData GetDefenderData()
+		private static InputPlayerData GetDefenderData()
 		{
 			return new Communication.Interfaces.InputPlayerData()
 			{
@@ -109,7 +110,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp
 			};
 		}
 
-		private static Communication.Interfaces.IInputPlayerData GetAttackerData()
+		private static InputPlayerData GetAttackerData()
 		{
 			return new Communication.Interfaces.InputPlayerData()
 			{

@@ -1,4 +1,5 @@
-﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
+﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Interfaces;
+using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
 using System;
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes

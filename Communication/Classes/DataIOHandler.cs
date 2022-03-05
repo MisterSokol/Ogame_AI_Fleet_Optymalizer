@@ -7,8 +7,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Classes
 	public class DataIOHandler : IDataIOHandler
 	{
 		private readonly string configrationDataPath = @".\app_configuration.json";
-		private readonly string inputDataPath = @".\app_configuration.json";
-		private readonly string outputDataPath = @".\app_configuration.json";
+		private readonly string inputDataPath = @".\app_input.json";
+		private readonly string outputDataPath = @".\app_output.json";
+		private readonly string gameDataPath = @".\app_gameData.json";
 
 		public IConfigurationData GetConfiguration()
 		{
@@ -18,6 +19,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Classes
 		public IInputData GetInput()
 		{
 			return JsonConvert.DeserializeObject<InputData>(File.ReadAllText(inputDataPath));
+		}
+
+		public IGameData GetGameData()
+		{
+			return JsonConvert.DeserializeObject<GameData>(File.ReadAllText(gameDataPath));
 		}
 
 		public void SaveOutput(IOutputData outputData)

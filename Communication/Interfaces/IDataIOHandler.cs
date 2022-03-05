@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Interfaces
+﻿namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Interfaces
 {
 	public interface IDataIOHandler
 	{
 		IInputData GetInput();
 		IConfigurationData GetConfiguration();
+		IGameData GetGameData();
 		void SaveOutput(IOutputData outputData);
 	}
 }

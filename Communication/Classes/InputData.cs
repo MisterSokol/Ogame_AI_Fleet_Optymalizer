@@ -85,7 +85,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Classes
 		public int GeneralFasterRecyclersPercentage { get; set; }
 		public int GeneralReducedRecyclerConsumptionPercentage { get; set; }
 		public int ReaperDebrisHarvestLimitPercentage { get; set; }
-		public IInputPlayerData AttackerData { get; set; }
-		public IInputPlayerData DefenderData { get; set; }
+		public InputPlayerData AttackerData { get; set; }
+		public InputPlayerData DefenderData { get; set; }
 	}
 }

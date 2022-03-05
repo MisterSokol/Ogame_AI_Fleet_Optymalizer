@@ -23,7 +23,7 @@
 		GaussCannon = 18,
 		IonCannon = 19,
 		PlasmaTurret = 20,
-		SolarSatelite = 23,
-		Crawler = 24,
+		SolarSatelite = 21,
+		Crawler = 22,
 	}
 }

@@ -3,8 +3,8 @@
 	public interface IInputData
 	{
 		// Attacker details
-		IInputPlayerData AttackerData { get; set; }
-		IInputPlayerData DefenderData { get; set; }
+		InputPlayerData AttackerData { get; set; }
+		InputPlayerData DefenderData { get; set; }
 		//int AttackerClass { get; set; }
 		//int AttackerWeaponLevel { get; set; }
 		//int AttackerShieldLevel { get; set; }
