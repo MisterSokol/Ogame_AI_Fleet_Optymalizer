@@ -153,9 +153,17 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 		private void ResetRandomFitnessRollingTable(IConfigurationData configuration, List<Individual> generation)
 		{
+			var fitnessMinValueAdjustment = generation.Min(x => x.FitnessValue);
+
+			// To adjust negative fitness values (if exist) we move all values
+			//  so they start min (fixed) range - 100
+			fitnessMinValueAdjustment = fitnessMinValueAdjustment > 0
+				? 0
+				: -fitnessMinValueAdjustment + 100;
+
 			for (int i = 0; i < configuration.GenerationSize; i++)
 			{
-				this.randomFitnessRollingTable[i + 1] = this.randomFitnessRollingTable[i] + generation[i].FitnessValue;
+				this.randomFitnessRollingTable[i + 1] = this.randomFitnessRollingTable[i] + generation[i].FitnessValue + fitnessMinValueAdjustment;
 			}
 		}
 
