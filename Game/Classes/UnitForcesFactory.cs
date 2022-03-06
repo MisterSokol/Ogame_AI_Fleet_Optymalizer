@@ -51,8 +51,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 				if (unitCount > 0)
 				{
+					//Console.WriteLine($"Start creating {unitType}, amount: {unitCount}");
 					var unitsOfType = this.unitFactory.CreateUnits((UnitType)unitType, inputData, inputData.DefenderData, gameData, unitCount);
-
+					//Console.WriteLine($"End creating {unitType}, amount: {unitCount}");
 					units.AddRange(unitsOfType);
 
 					slowestSpeed = Math.Min(slowestSpeed, unitsOfType[0].Speed);

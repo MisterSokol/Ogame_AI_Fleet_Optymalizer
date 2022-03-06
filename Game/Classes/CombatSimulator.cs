@@ -24,6 +24,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			for (int i = 0; i < inputData.NumberOfSimulations; i++)
 			{
+				//Console.WriteLine($"\tSimulation Number: {i}");
 				combatResults.Add(this.RunSingleSimulation(inputData, attackerFleet, defenderUnits));
 
 				attackerFleet.ResetToFullForces();
@@ -65,6 +66,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				&& defenderUnits.HasUnitsLeft()
 				)
 			{
+				//Console.WriteLine($"Round {round}");
 				defenderUnits.HitButDoNotUpdate(attackerFleet);
 				attackerFleet.HitButDoNotUpdate(defenderUnits);
 

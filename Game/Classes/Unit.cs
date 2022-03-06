@@ -73,7 +73,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.ShieldValue = this.maxShieldValue;
 		}
 
-		public void TakeHit(IUnit enemyUnit)
+		public void TakeHit(Randomizer randomizer, IUnit enemyUnit)
 		{
 			if (!this.IsAlive || this.IsDamageLessOrEqualToOnePercentOfShieldValue(enemyUnit))
 			{
@@ -90,7 +90,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				this.ShieldValue -= enemyUnit.Damage;
 			}
 
-			if (this.HP > 0 && this.CheckIfExploded())
+			if (this.HP > 0 && this.CheckIfExploded(randomizer))
 			{
 				this.HP = 0;
 			}
@@ -106,11 +106,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return MemberwiseClone();
 		}
 
-		private bool CheckIfExploded()
+		private bool CheckIfExploded(Randomizer randomizer)
 		{
 			var percentOfMaxHP = (double)this.HP / this.maxHP * 100;
 
-			return percentOfMaxHP < 70 && Randomizer.CheckIfHitTheChance(100 - (int)percentOfMaxHP);
+			return percentOfMaxHP < 70 && randomizer.CheckIfHitTheChance(100 - (int)percentOfMaxHP);
 		}
 
 		private bool IsDamageLessOrEqualToOnePercentOfShieldValue(IUnit enemyUnit)

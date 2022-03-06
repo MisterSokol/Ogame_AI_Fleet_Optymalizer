@@ -2,16 +2,16 @@
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
-	public static class Randomizer
+	public class Randomizer
 	{
-		private static Random random = new Random();
+		private Random random = new Random();
 
-		public static int RandomFromRange(int min, int max)
+		public int RandomFromRange(int min, int max)
 		{
 			return random.Next(min, max + 1);
 		}
 
-		public static long RandomFromRange(long min, long max)
+		public long RandomFromRange(long min, long max)
 		{
 			byte[] buf = new byte[8];
 			random.NextBytes(buf);
@@ -20,7 +20,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return Math.Abs(longRand % (max + 1 - min)) + min;
 		}
 
-		public static bool CheckIfHitTheChance(int percentage)
+		public bool CheckIfHitTheChance(int percentage)
 		{
 			if (percentage > 100 || percentage < 0)
 			{
@@ -30,12 +30,12 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return RandomFromRange(0, 100) < percentage;
 		}
 
-		public static bool RandomTrueFalse()
+		public bool RandomTrueFalse()
 		{
 			return RandomFromRange(0, 1) == 1;
 		}
 
-		public static int GetRandomPercentageValueOfNumber(int number)
+		public int GetRandomPercentageValueOfNumber(int number)
 		{
 			return (int)((double)RandomFromRange(0, 100) * number / 100 );
 		}

@@ -19,5 +19,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		IUnit GetRandomAliveUnit();
 		double TacticalPower();
 		Resources GetFlightCost(Communication.Interfaces.IInputData inputData);
+
+		IUnitForces Copy();
 	}
 }

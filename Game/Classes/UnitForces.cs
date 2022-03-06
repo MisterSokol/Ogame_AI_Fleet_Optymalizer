@@ -8,6 +8,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 	public class UnitForces : IUnitForces
 	{
 		private readonly IGameData gameData;
+		private readonly Randomizer randomizer;
 
 		private List<IUnit> allUnits;
 		private List<IUnit> aliveUnits;
@@ -25,6 +26,13 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.aliveUnits = this.allUnits;
 			this.explodedUnits = new List<IUnit>();
 			this.UnitTypesRepresentatives = unitTypesRepresentatives;
+
+			this.randomizer = new Randomizer();
+		}
+
+		public IUnitForces Copy()
+		{
+			return new UnitForces(this.gameData, this.allUnits.Select(x => (IUnit)x.Clone()).ToList(), this.FleetSpeed, this.UnitTypesRepresentatives.Select(x => (IUnit)x.Clone()).ToList());
 		}
 
 		public Resources GetDebrisResources()
@@ -77,10 +85,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		{
 			for (int i = 0; i < this.aliveUnits.Count; )
 			{
+				//System.Console.WriteLine($"\t\tUnit index {i}");
 				var attackerUnit = this.aliveUnits[i];
 				var defenderTargetedUnit = defenderUnit.GetRandomAliveUnit();
 
-				defenderTargetedUnit.TakeHit(attackerUnit);
+				defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit);
 
 				if (!this.ShouldAttackAgain(attackerUnit, defenderTargetedUnit))
 				{
@@ -96,7 +105,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				var fastGunsValue = this.gameData.UnitsData[attackerUnit.UnitType].FastGuns[defenderTargetedUnit.UnitType];
 
 				return fastGunsValue != 0
-					&& Randomizer.CheckIfHitTheChance((fastGunsValue - 1) * 100 / fastGunsValue);
+					&& this.randomizer.CheckIfHitTheChance((fastGunsValue - 1) * 100 / fastGunsValue);
 			}
 
 			return false;
@@ -109,7 +118,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public IUnit GetRandomAliveUnit()
 		{
-			return this.aliveUnits[Randomizer.RandomFromRange(0, this.aliveUnits.Count - 1)];
+			return this.aliveUnits[this.randomizer.RandomFromRange(0, this.aliveUnits.Count - 1)];
 		}
 
 		public double TacticalPower()

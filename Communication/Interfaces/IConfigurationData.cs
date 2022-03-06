@@ -10,6 +10,7 @@
 		int ChanceOfMutationToMaxPercentage { get; set; }
 		int MinMutationModificationPercentage { get; set; }
 		int MaxMutationModificationPercentage { get; set; }
+		int ThreadNumber { get; set; }
 
 		int AttackerWinFitnessMultiplier { get; set; }
 		int DrawFitnessMultiplier { get; set; }

@@ -8,6 +8,7 @@ using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 {
@@ -15,6 +16,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 	{
 		private readonly ICombatSimulator combatSimulator;
 		private readonly IUnitForcesFactory unitForcesFactory;
+		private readonly Randomizer randomizer;
 
 		private List<long> randomFitnessRollingTable;
 		private Fleet maxFleet;
@@ -25,14 +27,16 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		{
 			this.combatSimulator = new CombatSimulator();
 			this.unitForcesFactory = new UnitForcesFactory();
+			this.randomizer = new Randomizer();
 		}
 
 		public IOutputData Process(IConfigurationData configuration, IInputData input, IGameData gameData)
 		{
 			this.randomFitnessRollingTable = new List<long>(Enumerable.Repeat(0L, configuration.GenerationSize + 1));
 			this.maxFleet = this.GetMaxFleet(input);
+			//Console.WriteLine("Start creating Defender");
 			var defenderUnitForces = this.unitForcesFactory.CreateDefender(input, gameData);
-
+			//Console.WriteLine("End creating Defender");
 			var generation = this.InitializeFirstGeneration(configuration, input);
 			Individual theBestIndividual;
 			var generationCounter = 0;
@@ -41,7 +45,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			{
 				theBestIndividual = this.CalculateFitnessValuesAndGetBestIndividual(configuration, input, gameData, generation, defenderUnitForces);
 
-				Console.WriteLine($"Generation: {generationCounter++}\t Best fitness: {theBestIndividual.FitnessValue}");
+				if (generationCounter % 1 == 0)
+				{
+					Console.WriteLine($"Generation: {generationCounter++}\t Best fitness: {theBestIndividual.FitnessValue}");
+				}
 
 				this.ResetRandomFitnessRollingTable(configuration, generation);
 
@@ -54,24 +61,30 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			return this.GetOutputData(theBestIndividual);
 		}
 
+
+
 		private Individual CalculateFitnessValuesAndGetBestIndividual(IConfigurationData configuration, IInputData input, IGameData gameData, List<Individual> generation, IUnitForces defenderUnitForces)
 		{
+			object locker = new object();
+			var nextIndividualIndex = 0;
+			var threadFitnessCalculation = new ThreadFitnessCalculation(configuration, input, gameData, unitForcesFactory, combatSimulator, generation, defenderUnitForces, locker, ref nextIndividualIndex);
+
+			var threads = new Thread[configuration.ThreadNumber];
+			for (var i = 0; i < threads.Length; i++)
+			{
+				threads[i] = new Thread(new ThreadStart(threadFitnessCalculation.Calculate));
+				threads[i].Start();
+			}
+
+			for (var i = 0; i < threads.Length; i++)
+			{
+				threads[i].Join();
+			}
+
 			Individual bestIndividual = generation[0];
 
 			foreach (var individual in generation)
 			{
-				if (individual.FitnessValue != 0)
-				{
-					continue;
-				}
-
-				var individualUnitForces = this.unitForcesFactory.CreateAttacker(input, individual.Fleet, gameData);
-
-				var simulationResult = this.combatSimulator.RunSimulation(input, individualUnitForces, defenderUnitForces);
-
-				individual.FitnessValue = this.GetFitnessValue(configuration, simulationResult);
-				individual.SimulationResult = simulationResult;
-
 				if (individual.FitnessValue > bestIndividual.FitnessValue)
 				{
 					bestIndividual = individual;
@@ -79,6 +92,31 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			}
 
 			return bestIndividual;
+
+			//Individual bestIndividual = generation[0];
+
+			//foreach (var individual in generation)
+			//{
+			//	Console.WriteLine($"Calculating Fitness for indivisual number: {generation.IndexOf(individual)}");
+			//	if (individual.FitnessValue != 0)
+			//	{
+			//		continue;
+			//	}
+
+			//	var individualUnitForces = this.unitForcesFactory.CreateAttacker(input, individual.Fleet, gameData);
+
+			//	var simulationResult = this.combatSimulator.RunSimulation(input, individualUnitForces, defenderUnitForces);
+
+			//	individual.FitnessValue = this.GetFitnessValue(configuration, simulationResult);
+			//	individual.SimulationResult = simulationResult;
+
+			//	if (individual.FitnessValue > bestIndividual.FitnessValue)
+			//	{
+			//		bestIndividual = individual;
+			//	}
+			//}
+
+			//return bestIndividual;
 		}
 
 		private int GetFitnessValue(IConfigurationData configuration, ISimulationResult simulationResult)
@@ -173,7 +211,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 			while (newGeneration.Count < configuration.GenerationSize)
 			{
-				if (Randomizer.CheckIfHitTheChance(configuration.MutationChanceProbablityPercentage))
+				if (this.randomizer.CheckIfHitTheChance(configuration.MutationChanceProbablityPercentage))
 				{
 					newGeneration.Add(this.PerformMutation(configuration, input, generation));
 				}
@@ -212,20 +250,20 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		private Individual PerformMutation(IConfigurationData configuration, IInputData input, List<Individual> generation)
 		{
 			var fleetToMutate = this.PickRandomIndividualBasedOnFitness(generation).Fleet.Copy();
-			var unitTypeToMutate = (UnitType)Randomizer.RandomFromRange((int)UnitType.SmallCargo, (int)UnitType.Pathfinder);
+			var unitTypeToMutate = (UnitType)this.randomizer.RandomFromRange((int)UnitType.SmallCargo, (int)UnitType.Pathfinder);
 			var units = fleetToMutate.FleetUnits[unitTypeToMutate];
 
 			if (units == 0)
 			{
-				fleetToMutate.FleetUnits[unitTypeToMutate] = Randomizer.GetRandomPercentageValueOfNumber(this.maxFleet.FleetUnits[unitTypeToMutate]);
+				fleetToMutate.FleetUnits[unitTypeToMutate] = this.randomizer.GetRandomPercentageValueOfNumber(this.maxFleet.FleetUnits[unitTypeToMutate]);
 			}
 			else
 			{
-				if (Randomizer.CheckIfHitTheChance(configuration.ChanceOfMutationToZeroPercentage))
+				if (this.randomizer.CheckIfHitTheChance(configuration.ChanceOfMutationToZeroPercentage))
 				{
 					fleetToMutate.FleetUnits[unitTypeToMutate] = 0;
 				}
-				else if (Randomizer.CheckIfHitTheChance(configuration.ChanceOfMutationToMaxPercentage))
+				else if (this.randomizer.CheckIfHitTheChance(configuration.ChanceOfMutationToMaxPercentage))
 				{
 					fleetToMutate.FleetUnits[unitTypeToMutate] = this.maxFleet.FleetUnits[unitTypeToMutate];
 				}
@@ -235,10 +273,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 					do
 					{
 						newUnitValue = fleetToMutate.FleetUnits[unitTypeToMutate];
-						var modificationPercentage = Randomizer.RandomFromRange(configuration.MinMutationModificationPercentage, configuration.MaxMutationModificationPercentage);
+						var modificationPercentage = this.randomizer.RandomFromRange(configuration.MinMutationModificationPercentage, configuration.MaxMutationModificationPercentage);
 						var modificationValue = Math.Max(1, CalculationHelper.GetPercentageValue(units, modificationPercentage));
 
-						if (Randomizer.RandomTrueFalse())
+						if (this.randomizer.RandomTrueFalse())
 						{
 							newUnitValue += modificationValue;
 						}
@@ -264,7 +302,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 			foreach (var unitType in this.maxFleet.FleetUnits.Keys)
 			{
-				var parentToGetUnitFrom = Randomizer.RandomTrueFalse() ? leftParentFleet : rightParentFleet;
+				var parentToGetUnitFrom = this.randomizer.RandomTrueFalse() ? leftParentFleet : rightParentFleet;
 
 				childFleet.FleetUnits[unitType] = parentToGetUnitFrom.FleetUnits[unitType];
 			}
@@ -305,7 +343,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 				foreach (var unitType in this.maxFleet.FleetUnits.Keys)
 				{
-					randomFleet.FleetUnits[unitType] = Randomizer.GetRandomPercentageValueOfNumber(this.maxFleet.FleetUnits[unitType]);
+					randomFleet.FleetUnits[unitType] = this.randomizer.GetRandomPercentageValueOfNumber(this.maxFleet.FleetUnits[unitType]);
 				}
 
 				randomGeneration.Add(new Individual(randomFleet, fitnessValue: 0));
@@ -316,7 +354,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 		private Individual PickRandomIndividualBasedOnFitness(List<Individual> generation)
 		{
-			var randomFitnessChance = Randomizer.RandomFromRange(0, this.randomFitnessRollingTable.Last());
+			var randomFitnessChance = this.randomizer.RandomFromRange(0, this.randomFitnessRollingTable.Last());
 
 			// Modified binary search to search for matching range
 

@@ -16,7 +16,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		int Speed { get; }
 		int FuelConsumption { get; }
 
-		void TakeHit(IUnit enemyUnit);
+		void TakeHit(Randomizer randomizer, IUnit enemyUnit);
 		void RestoreShield();
 		Resources GetDebrisResources();
 		long GetUnitResourcesCapacity();
