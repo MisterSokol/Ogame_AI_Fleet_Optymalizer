@@ -5,6 +5,6 @@
 		IInputData GetInput();
 		IConfigurationData GetConfiguration();
 		IGameData GetGameData();
-		void SaveOutput(IOutputData outputData);
+		void SaveOutput(IOutputData outputData, string path = null);
 	}
 }

@@ -16,6 +16,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 	{
 		private readonly ICombatSimulator combatSimulator;
 		private readonly IUnitForcesFactory unitForcesFactory;
+		private readonly IDataIOHandler dataIOHandler;
 		private readonly Randomizer randomizer;
 
 		private List<long> randomFitnessRollingTable;
@@ -28,6 +29,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			this.combatSimulator = new CombatSimulator();
 			this.unitForcesFactory = new UnitForcesFactory();
 			this.randomizer = new Randomizer();
+			this.dataIOHandler = new DataIOHandler();
 		}
 
 		public IOutputData Process(IConfigurationData configuration, IInputData input, IGameData gameData)
@@ -48,6 +50,12 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 				if (generationCounter % 1 == 0)
 				{
 					Console.WriteLine($"Generation: {generationCounter++}\t Best fitness: {theBestIndividual.FitnessValue}");
+				}
+				if (generationCounter % 10 == 0)
+				{
+					var outputData = this.GetOutputData(theBestIndividual);
+
+					this.dataIOHandler.SaveOutput(outputData, $@".\Output\generation_{generationCounter}");
 				}
 
 				this.ResetRandomFitnessRollingTable(configuration, generation);

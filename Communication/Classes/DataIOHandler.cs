@@ -26,9 +26,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Classes
 			return JsonConvert.DeserializeObject<GameData>(File.ReadAllText(gameDataPath));
 		}
 
-		public void SaveOutput(IOutputData outputData)
+		public void SaveOutput(IOutputData outputData, string path = null)
 		{
-			File.WriteAllText(outputDataPath, JsonConvert.SerializeObject(outputData));
+			File.WriteAllText(path ?? outputDataPath, JsonConvert.SerializeObject(outputData));
 		}
 	}
 }
