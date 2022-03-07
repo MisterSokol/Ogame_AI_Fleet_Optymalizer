@@ -25,5 +25,7 @@
 		PlasmaTurret = 20,
 		SolarSatelite = 21,
 		Crawler = 22,
+		SmallDome = 23,
+		LargeDome = 24
 	}
 }

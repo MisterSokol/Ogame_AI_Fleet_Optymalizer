@@ -23,6 +23,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			foreach (var unitType in Enum.GetValues(typeof(UnitType)))
 			{
+				if ((UnitType)unitType == UnitType.SmallDome || (UnitType)unitType == UnitType.LargeDome)
+				{
+					continue;
+				}
+
 				var unitCount = this.GetUnitCount(inputPlayerData, unitType.ToString());
 
 				if (unitCount > 0)
@@ -36,6 +41,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				}
 			}
 
+			this.AddDomesToUnits(units, unitTypesRepresentatives, inputData, inputPlayerData, gameData);
+
 			return new UnitForces(gameData, units, slowestSpeed, unitTypesRepresentatives);
 		}
 
@@ -47,6 +54,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			foreach (var unitType in Enum.GetValues(typeof(UnitType)))
 			{
+				if ((UnitType)unitType == UnitType.SmallDome || (UnitType)unitType == UnitType.LargeDome)
+				{
+					continue;
+				}
+
 				var unitCount = this.GetUnitCount(inputData.DefenderData, unitType.ToString());
 
 				if (unitCount > 0)
@@ -89,6 +101,25 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		private int GetUnitCount(IInputPlayerData inputPlayerData, string unitTypeName)
 		{
 			return (int)inputPlayerData.GetType().GetProperty(unitTypeName).GetValue(inputPlayerData, null);
+		}
+
+		private void AddDomesToUnits(List<IUnit> units, List<IUnit> unitTypesRepresentatives, IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
+		{
+			if (inputPlayerData.HasSmallShield)
+			{
+				var smallDome = this.unitFactory.CreateUnit(UnitType.SmallDome, inputData, inputPlayerData, gameData);
+
+				units.Add(smallDome);
+				unitTypesRepresentatives.Add(smallDome);
+			}
+
+			if (inputPlayerData.HasBigShield)
+			{
+				var largeDome = this.unitFactory.CreateUnit(UnitType.LargeDome, inputData, inputPlayerData, gameData);
+
+				units.Add(largeDome);
+				unitTypesRepresentatives.Add(largeDome);
+			}
 		}
 	}
 }

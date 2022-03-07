@@ -22,7 +22,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return units;
 		}
 
-		private IUnit CreateUnit(UnitType unitType, IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
+		public IUnit CreateUnit(UnitType unitType, IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
 		{
 			var unitGameData = gameData.UnitsData[unitType];
 			var driveTechnologies = inputPlayerData.GetDriveTechnologies();
