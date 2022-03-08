@@ -35,14 +35,18 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return new UnitForces(this.gameData, this.allUnits.Select(x => (IUnit)x.Clone()).ToList(), this.FleetSpeed, this.UnitTypesRepresentatives.Select(x => (IUnit)x.Clone()).ToList());
 		}
 
-		public Resources GetDebrisResources()
+		public Resources GetDebrisResources(bool includeAliveUnits = false)
 		{
-			if (!this.explodedUnits.Any())
+			var units = includeAliveUnits
+				? this.allUnits
+				: this.explodedUnits;
+
+			if (!units.Any())
 			{
 				return new Resources();
 			}
 
-			return this.explodedUnits
+			return units
 				.Select(x => x.GetDebrisResources())
 				.Aggregate((x, y) => x + y);
 		}
@@ -52,14 +56,18 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return this.aliveUnits.Sum(x => x.GetUnitResourcesCapacity());
 		}
 
-		public Resources GetLostResources()
+		public Resources GetLostResources(bool includeAliveUnits = false)
 		{
-			if (!this.explodedUnits.Any())
+			var units = includeAliveUnits
+				? this.allUnits
+				: this.explodedUnits;
+
+			if (!units.Any())
 			{
 				return new Resources();
 			}
 
-			return this.explodedUnits
+			return units
 				.Select(x => x.GetUnitResourcesCost())
 				.Aggregate((x, y) => x + y);
 		}

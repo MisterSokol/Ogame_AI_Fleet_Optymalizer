@@ -21,5 +21,8 @@
 		int AttackerToDefenderMoreThan5FleetRatioPentaltyPercentage { get; set; }
 		int DeuteriumPriceMultiplier { get; set; }
 		int CrystalPriceMultiplier { get; set; }
+		int WinPriority { get; set; }
+		int ProfitPriority { get; set; }
+		int FleetSpeedPriority { get; set; }
 	}
 }

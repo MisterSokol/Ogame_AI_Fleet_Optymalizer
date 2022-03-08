@@ -22,5 +22,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Classes
 		public int AttackerToDefenderMoreThan5FleetRatioPentaltyPercentage { get; set; }
 		public int DeuteriumPriceMultiplier { get; set; }
 		public int CrystalPriceMultiplier { get; set; }
+		public int WinPriority { get; set; }
+		public int ProfitPriority { get; set; }
+		public int FleetSpeedPriority { get; set; }
 	}
 }

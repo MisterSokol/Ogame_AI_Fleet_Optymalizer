@@ -1,8 +1,10 @@
 ﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Interfaces;
+using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 {
@@ -13,6 +15,16 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		private readonly IGameData gameData;
 		private readonly IUnitForcesFactory unitForcesFactory;
 		private readonly ICombatSimulator combatSimulator;
+
+		private readonly IUnitForces attackerMaxForces;
+		private readonly int winMinFitnessValue;
+		private readonly int winMaxFitnessValue;
+		private readonly int profitMinFitnessValue;
+		private readonly int profitMaxFitnessValue;
+		private readonly int fleetSpeedMinFitnessValue;
+		private readonly int fleetSpeedMaxFitnessValue;
+		//private readonly int fuelMinFitnessValue;
+		//private readonly int fuelMaxFitnessValue;
 
 		private List<Individual> generation;
 		private IUnitForces defenderUnitForces;
@@ -40,6 +52,15 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			this.defenderUnitForces = defenderUnitForces;
 			this.locker = locker;
 			this.nextIndividualIndex = nextIndividualIndex;
+
+			this.attackerMaxForces = this.unitForcesFactory.Create(this.input, this.input.AttackerData, this.gameData);
+
+			this.winMinFitnessValue = this.GetWinMinFitnessValue();
+			this.winMaxFitnessValue = this.GetWinMaxFitnessValue();
+			this.profitMinFitnessValue = this.GetProfitMinFitnessValue();
+			this.profitMaxFitnessValue = this.GetProfitMaxFitnessValue();
+			this.fleetSpeedMinFitnessValue = this.GetFleetSpeedMinFitnessValue();
+			this.fleetSpeedMaxFitnessValue = this.GetFleetSpeedMaxFitnessValue();
 		}
 
 		public void Calculate()
@@ -94,32 +115,35 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		{
 			var total = 0;
 
-			total += this.GetWinFitnessValue(simulationResult);
-			total += this.GetProfitFitnessValue(simulationResult);
-			total += this.GetFleetSpeedFitnessValue(simulationResult);
+			total += this.GetWinFitnessValue(simulationResult) * this.configuration.WinPriority;
+			total += this.GetProfitFitnessValue(simulationResult) * this.configuration.ProfitPriority;
+			total += this.GetFleetSpeedFitnessValue(simulationResult) * this.configuration.FleetSpeedPriority;
+			//total += this.GetFuelFitnessValue(simulationResult) * this.configuration.FuelPriority;
 
-			total = this.ApplyRatioPenalty(total, simulationResult);
+			//total = this.ApplyRatioPenalty(total, simulationResult);
 
 			return total;
 		}
 
 		private int GetFleetSpeedFitnessValue(ISimulationResult simulationResult)
 		{
-			return simulationResult.AttackerFlightSpeed * configuration.FlightSpeedFitnessMultiplier;
+			return this.NormalizeValue(simulationResult.AttackerFlightSpeed, this.fleetSpeedMinFitnessValue, this.fleetSpeedMaxFitnessValue);
 		}
 
 		private int GetProfitFitnessValue(ISimulationResult simulationResult)
 		{
-			var profitResources = simulationResult.AttackerAverageProfitResources - simulationResult.FuelConsumption;
+			var profit = simulationResult.AttackerAverageProfitResources.GetTotalWorth(configuration);
 
-			return profitResources.GetTotalWorth(configuration) * configuration.ProfitResourcesFitnessMultiplier;
+			return this.NormalizeValue(profit, this.profitMinFitnessValue, this.profitMaxFitnessValue);
 		}
 
 		private int GetWinFitnessValue(ISimulationResult simulationResult)
 		{
-			return simulationResult.AttackerWinningChancePercentage * configuration.AttackerWinFitnessMultiplier
+			var winValue = simulationResult.AttackerWinningChancePercentage * configuration.AttackerWinFitnessMultiplier
 				+ simulationResult.DrawChancePercentage * configuration.DrawFitnessMultiplier
 				+ simulationResult.DefenderWinningChancePercentage * configuration.DefenderWinFitnessMultiplier;
+
+			return this.NormalizeValue(winValue, this.winMinFitnessValue, this.winMaxFitnessValue);
 		}
 
 		private int ApplyRatioPenalty(int fitnessValue, ISimulationResult simulationResult)
@@ -135,6 +159,61 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			}
 
 			return fitnessValue;
+		}
+
+
+		private int NormalizeValue(int value, int minValue, int maxValue)
+		{
+			const int normalizedDataMin = 0;
+			const int normalizedDataMax = 1000000;
+
+			var valuePercentage = (double)(value - minValue) / (maxValue - minValue);
+
+			return (int)((normalizedDataMax - normalizedDataMin) * valuePercentage + normalizedDataMin);
+		}
+
+		private int GetWinMinFitnessValue()
+		{
+			var multipliers = new List<int>() { this.configuration.DefenderWinFitnessMultiplier, this.configuration.DrawFitnessMultiplier, this.configuration.AttackerWinFitnessMultiplier };
+			
+			return 100 * multipliers.Min();
+		}
+
+		private int GetWinMaxFitnessValue()
+		{
+			var multipliers = new List<int>() { this.configuration.DefenderWinFitnessMultiplier, this.configuration.DrawFitnessMultiplier, this.configuration.AttackerWinFitnessMultiplier };
+			return 100 * multipliers.Max();
+		}
+
+		private int GetProfitMinFitnessValue()
+		{
+			var lostResources = this.attackerMaxForces.GetDebrisResources(true) - this.attackerMaxForces.GetLostResources(true);
+
+			return lostResources.GetTotalWorth(this.configuration);
+		}
+
+		private int GetProfitMaxFitnessValue()
+		{
+			var availableResources = new Resources()
+			{
+				Metal = CalculationHelper.GetPercentageValue(this.input.DefenderData.MetalResources, this.input.PlunderPercentage),
+				Crystal = CalculationHelper.GetPercentageValue(this.input.DefenderData.CrystalResources, this.input.PlunderPercentage),
+				Deuterium = CalculationHelper.GetPercentageValue(this.input.DefenderData.DeuteriumResources, this.input.PlunderPercentage)
+			};
+
+			var gainedResources = availableResources + this.defenderUnitForces.GetDebrisResources(true);
+
+			return gainedResources.GetTotalWorth(this.configuration);
+		}
+
+		private int GetFleetSpeedMinFitnessValue()
+		{
+			return this.attackerMaxForces.UnitTypesRepresentatives.Min(x => x.Speed);
+		}
+
+		private int GetFleetSpeedMaxFitnessValue()
+		{
+			return this.attackerMaxForces.UnitTypesRepresentatives.Max(x => x.Speed);
 		}
 	}
 }
