@@ -1,4 +1,5 @@
-﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes;
+﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Interfaces;
+using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes;
 using System.Collections.Generic;
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
@@ -18,7 +19,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		void EndRound();
 		IUnit GetRandomAliveUnit();
 		double TacticalPower();
-		Resources GetFlightCost(Communication.Interfaces.IInputData inputData);
+		Resources GetFlightCost(IInputData inputData, bool forceEveryFleetMaxSpeed = false);
 
 		IUnitForces Copy();
 		void PerformTacticalRetreat();

@@ -14,7 +14,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public int AttackerWinningChancePercentage => this.GetWinningChancePercentage(WinnerType.Attacker);
 		public int DrawChancePercentage => this.GetWinningChancePercentage(WinnerType.Draw);
 		public int DefenderWinningChancePercentage => this.GetWinningChancePercentage(WinnerType.Defender);
-		public Resources AttackerAverageProfitResources => this.attackerProfitResources.Aggregate((x, y) => x + y) / this.attackerProfitResources.Count;
+		public Resources AttackerAverageProfitResources => this.attackerProfitResources.Aggregate((x, y) => x + y) / this.attackerProfitResources.Count - this.FuelConsumption;
 		public int AttackerFlightSpeed { get; set; }
 		public double AttackerFleetToDefenderRatio { get; set; }
 		public Resources FuelConsumption { get; set; }

@@ -48,6 +48,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			simulationResult.AttackerFlightSpeed = this.GetFlightTime(attackerFleet, inputData);
 			simulationResult.AttackerFleetToDefenderRatio = this.GetAttackerFleetToDefenderRatio(attackerFleet, defenderUnits);
 			simulationResult.FuelConsumption = attackerFleet.GetFlightCost(inputData);
+
 			return simulationResult;
 		}
 

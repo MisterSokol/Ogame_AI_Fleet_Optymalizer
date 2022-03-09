@@ -143,7 +143,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			total += this.GetWinFitnessValue(simulationResult) * this.configuration.WinPriority;
 			total += this.GetProfitFitnessValue(simulationResult) * this.configuration.ProfitPriority;
 			total += this.GetFleetSpeedFitnessValue(simulationResult) * this.configuration.FleetSpeedPriority;
-			//total += this.GetFuelFitnessValue(simulationResult) * this.configuration.FuelPriority;
 
 			//total = this.ApplyRatioPenalty(total, simulationResult);
 
@@ -198,7 +197,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 		private int GetProfitMinFitnessValue()
 		{
-			var lostResources = this.attackerMaxForces.GetDebrisResources(true) - this.attackerMaxForces.GetLostResources(true);
+			var lostResources = this.attackerMaxForces.GetDebrisResources(true) 
+				- this.attackerMaxForces.GetLostResources(true)
+				- this.attackerMaxForces.GetFlightCost(this.input, true);
 
 			return lostResources.GetTotalWorth(this.configuration);
 		}

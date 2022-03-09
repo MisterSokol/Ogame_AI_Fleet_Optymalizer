@@ -1,5 +1,7 @@
 ﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Interfaces;
+using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -141,14 +143,20 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return (double)fleetPoints + (double)civilPoints / 4;
 		}
 
-		public Resources GetFlightCost(IInputData inputData)
+		public Resources GetFlightCost(IInputData inputData, bool forceEveryFleetMaxSpeed = false)
 		{
-			//var fleetFuelUsage = this.allUnits.Sum(x => x.FuelConsumption) * CalculationHelper.GetDistanceBetweenPlayers(inputData)/(double)35000;
-			// return new Resources(0, 0, 1 + (int)Math.Round(fleetFuelUsage));
-			// For now simple summary of all fuel consumption will be enought
-			var fleetFuelUsage = this.allUnits.Sum(x => x.FuelConsumption);
+			// TODO: It's not perfect but it's accurate enought to leave it for now
+			var distance = CalculationHelper.GetDistanceBetweenPlayers(inputData);
+			var fleetFuelUsage = this.allUnits.Sum(x => 
+				1 + 
+				Math.Round(
+					x.FuelConsumption *
+					distance / (double)35000 * 
+					(forceEveryFleetMaxSpeed ? 4 : Math.Pow(1+this.FleetSpeed/x.Speed, 2))
+				)
+			);
 
-			return new Resources(0, 0, fleetFuelUsage);
+			return new Resources(0, 0, (int)fleetFuelUsage);
 		}
 
 		public void PerformTacticalRetreat()
