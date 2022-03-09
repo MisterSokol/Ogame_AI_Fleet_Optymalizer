@@ -18,8 +18,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Classes
 		public int DefenderWinFitnessMultiplier { get; set; }
 		public int ProfitResourcesFitnessMultiplier { get; set; }
 		public int FlightSpeedFitnessMultiplier { get; set; }
-		public int AttackerToDefenderMoreThan3FleetRatioPentaltyPercentage { get; set; }
-		public int AttackerToDefenderMoreThan5FleetRatioPentaltyPercentage { get; set; }
+		public bool TacticalRetreatAt3Ratio { get; set; }
+		public bool TacticalRetreatAt5Ratio { get; set; }
 		public int DeuteriumPriceMultiplier { get; set; }
 		public int CrystalPriceMultiplier { get; set; }
 		public int WinPriority { get; set; }

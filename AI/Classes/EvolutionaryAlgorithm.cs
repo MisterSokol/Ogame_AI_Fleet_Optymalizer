@@ -135,24 +135,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			total += this.GetProfitFitnessValue(configuration, simulationResult);
 			total += this.GetFleetSpeedFitnessValue(configuration, simulationResult);
 
-			total = this.ApplyRatioPenalty(total, configuration, simulationResult);
-
 			return total;
-		}
-
-		private int ApplyRatioPenalty(int fitnessValue, IConfigurationData configuration, ISimulationResult simulationResult)
-		{
-			if (simulationResult.AttackerFleetToDefenderRatio >= 3 && configuration.AttackerToDefenderMoreThan3FleetRatioPentaltyPercentage > 0)
-			{
-				return CalculationHelper.GetPercentageValue(fitnessValue, 100 - configuration.AttackerToDefenderMoreThan3FleetRatioPentaltyPercentage);
-			}
-
-			if (simulationResult.AttackerFleetToDefenderRatio >= 5 && configuration.AttackerToDefenderMoreThan5FleetRatioPentaltyPercentage > 0)
-			{
-				return CalculationHelper.GetPercentageValue(fitnessValue, 100 - configuration.AttackerToDefenderMoreThan5FleetRatioPentaltyPercentage);
-			}
-
-			return fitnessValue;
 		}
 
 		private int GetFleetSpeedFitnessValue(IConfigurationData configuration, ISimulationResult simulationResult)

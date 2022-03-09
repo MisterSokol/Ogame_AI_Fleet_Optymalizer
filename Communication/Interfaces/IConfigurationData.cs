@@ -17,8 +17,8 @@
 		int DefenderWinFitnessMultiplier { get; set; }
 		int ProfitResourcesFitnessMultiplier { get; set; }
 		int FlightSpeedFitnessMultiplier { get; set; }
-		int AttackerToDefenderMoreThan3FleetRatioPentaltyPercentage { get; set; }
-		int AttackerToDefenderMoreThan5FleetRatioPentaltyPercentage { get; set; }
+		bool TacticalRetreatAt3Ratio { get; set; }
+		bool TacticalRetreatAt5Ratio { get; set; }
 		int DeuteriumPriceMultiplier { get; set; }
 		int CrystalPriceMultiplier { get; set; }
 		int WinPriority { get; set; }

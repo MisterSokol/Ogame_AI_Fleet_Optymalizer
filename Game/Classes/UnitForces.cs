@@ -150,5 +150,14 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			return new Resources(0, 0, fleetFuelUsage);
 		}
+
+		public void PerformTacticalRetreat()
+		{
+			this.allUnits = this.allUnits
+				.Where(x => !this.gameData.UnitsData[x.UnitType].IsFleet || !this.gameData.UnitsData[x.UnitType].CanDoTacticalRetreat)
+				.ToList();
+
+			this.aliveUnits = this.allUnits;
+		}
 	}
 }

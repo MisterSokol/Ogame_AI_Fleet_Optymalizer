@@ -21,5 +21,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		Resources GetFlightCost(Communication.Interfaces.IInputData inputData);
 
 		IUnitForces Copy();
+		void PerformTacticalRetreat();
 	}
 }

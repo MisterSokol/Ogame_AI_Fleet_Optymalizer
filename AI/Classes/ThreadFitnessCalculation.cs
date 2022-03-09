@@ -104,11 +104,36 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			}
 
 			var individualUnitForces = this.unitForcesFactory.CreateAttacker(this.input, individual.Fleet, this.gameData);
+			var defenderUnitForcesForSimulation = this.defenderUnitForces.Copy();
 
-			var simulationResult = this.combatSimulator.RunSimulation(this.input, individualUnitForces, this.defenderUnitForces.Copy());
+			var attackerFleetToDefenderRatio = this.GetAttackerFleetToDefenderRatio(individualUnitForces, defenderUnitForcesForSimulation);
+
+			if (this.CanDoTacticalRetreat(attackerFleetToDefenderRatio, individualUnitForces, defenderUnitForces))
+			{
+				defenderUnitForcesForSimulation.PerformTacticalRetreat();
+			}
+
+			var simulationResult = this.combatSimulator.RunSimulation(this.input, individualUnitForces, defenderUnitForcesForSimulation);
 
 			individual.FitnessValue = this.GetFitnessValue(simulationResult);
+			simulationResult.AttackerFleetToDefenderRatio = attackerFleetToDefenderRatio;
 			individual.SimulationResult = simulationResult;
+		}
+
+		private bool CanDoTacticalRetreat(double attackerFleetToDefenderRatio, IUnitForces attackerFleet, IUnitForces defenderUnits)
+		{
+			var retreatRatio = this.configuration.TacticalRetreatAt3Ratio
+				? 3
+				: this.configuration.TacticalRetreatAt5Ratio
+					? 5
+					: int.MaxValue;
+
+			return attackerFleetToDefenderRatio >= retreatRatio;
+		}
+
+		private double GetAttackerFleetToDefenderRatio(IUnitForces attackerFleet, IUnitForces defenderUnits)
+		{
+			return attackerFleet.TacticalPower() / defenderUnits.TacticalPower();
 		}
 
 		private int GetFitnessValue(ISimulationResult simulationResult)

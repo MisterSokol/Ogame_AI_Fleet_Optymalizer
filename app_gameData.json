@@ -5,6 +5,7 @@
 			"Name": "SmallCargo",
 			"IsFleet": true,
 			"IsCivilUnit": true,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 2000,
 				"Crystal": 2000,
@@ -39,6 +40,7 @@
 			"Name": "LargeCargo",
 			"IsFleet": true,
 			"IsCivilUnit": true,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 6000,
 				"Crystal": 6000,
@@ -67,6 +69,7 @@
 			"Name": "LightFighter",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 3000,
 				"Crystal": 1000,
@@ -95,6 +98,7 @@
 			"Name": "HeavyFighter",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 6000,
 				"Crystal": 4000,
@@ -124,6 +128,7 @@
 			"Name": "Cruiser",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 20000,
 				"Crystal": 7000,
@@ -154,6 +159,7 @@
 			"Name": "Battleship",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 45000,
 				"Crystal": 15000,
@@ -183,6 +189,7 @@
 			"Name": "Colonyship",
 			"IsFleet": true,
 			"IsCivilUnit": true,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 10000,
 				"Crystal": 20000,
@@ -211,6 +218,7 @@
 			"Name": "Recycler",
 			"IsFleet": true,
 			"IsCivilUnit": true,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 10000,
 				"Crystal": 6000,
@@ -251,6 +259,7 @@
 			"Name": "Probe",
 			"IsFleet": true,
 			"IsCivilUnit": true,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 0,
 				"Crystal": 1000,
@@ -276,6 +285,7 @@
 			"Name": "Bomber",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 50000,
 				"Crystal": 25000,
@@ -316,6 +326,7 @@
 			"Name": "Destroyer",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 60000,
 				"Crystal": 50000,
@@ -346,6 +357,7 @@
 			"Name": "Deathstar",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 5000000,
 				"Crystal": 4000000,
@@ -392,6 +404,7 @@
 			"Name": "Battlecruiser",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 30000,
 				"Crystal": 40000,
@@ -425,6 +438,7 @@
 			"Name": "Reaper",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 85000,
 				"Crystal": 55000,
@@ -456,6 +470,7 @@
 			"Name": "Pathfinder",
 			"IsFleet": true,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": true,
 			"ResourcesCost": {
 				"Metal": 8000,
 				"Crystal": 15000,
@@ -487,6 +502,7 @@
 			"Name": "RocketLauncher",
 			"IsFleet": false,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 2000,
 				"Crystal": 0,
@@ -504,6 +520,7 @@
 			"Name": "LightLaser",
 			"IsFleet": false,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 1500,
 				"Crystal": 500,
@@ -521,6 +538,7 @@
 			"Name": "HeavyLaser",
 			"IsFleet": false,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 6000,
 				"Crystal": 2000,
@@ -538,6 +556,7 @@
 			"Name": "GaussCannon",
 			"IsFleet": false,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 20000,
 				"Crystal": 15000,
@@ -555,6 +574,7 @@
 			"Name": "IonCannon",
 			"IsFleet": false,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 5000,
 				"Crystal": 3000,
@@ -572,6 +592,7 @@
 			"Name": "PlasmaTurret",
 			"IsFleet": false,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 50000,
 				"Crystal": 50000,
@@ -589,6 +610,7 @@
 			"Name": "SolarSatelite",
 			"IsFleet": false,
 			"IsCivilUnit": true,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 0,
 				"Crystal": 2000,
@@ -606,6 +628,7 @@
 			"Name": "Crawler",
 			"IsFleet": false,
 			"IsCivilUnit": true,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 2000,
 				"Crystal": 2000,
@@ -623,6 +646,7 @@
 			"Name": "SmallDome",
 			"IsFleet": false,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 10000,
 				"Crystal": 10000,
@@ -640,6 +664,7 @@
 			"Name": "LargeDome",
 			"IsFleet": false,
 			"IsCivilUnit": false,
+			"CanDoTacticalRetreat": false,
 			"ResourcesCost": {
 				"Metal": 50000,
 				"Crystal": 50000,

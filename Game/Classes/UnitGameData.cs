@@ -17,6 +17,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public int Capacity { get; set; }
 		public bool IsCivilUnit { get; set; }
 		public List<DriveTechnology> DriveTechnologies { get; set; }
+		public bool CanDoTacticalRetreat { get; set; }
 
 		public DriveTechnology GetActiveDriveTechnology(Dictionary<DriveTechnologyType, int> driveLevels)
 		{
