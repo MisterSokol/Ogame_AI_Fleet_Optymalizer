@@ -37,7 +37,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public int GetRandomPercentageValueOfNumber(int number)
 		{
-			return (int)((double)RandomFromRange(0, 100) * number / 100 );
+			return (int)Math.Round((double)RandomFromRange(0, 100) * number / 100 );
 		}
 	}
 }
