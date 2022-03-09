@@ -6,10 +6,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Classes
 {
 	public class DataIOHandler : IDataIOHandler
 	{
-		private readonly string configrationDataPath = @".\app_configuration.json";
-		private readonly string inputDataPath = @".\app_input.json";
-		private readonly string outputDataPath = @".\app_output.json";
-		private readonly string gameDataPath = @".\app_gameData.json";
+		private readonly string configrationDataPath = @".\.\.\app_configuration.json";
+		private readonly string inputDataPath = @".\.\.\app_input.json";
+		private readonly string outputDataPath = @".\.\.\app_output.json";
+		private readonly string gameDataPath = @".\.\.\app_gameData.json";
 
 		public IConfigurationData GetConfiguration()
 		{
