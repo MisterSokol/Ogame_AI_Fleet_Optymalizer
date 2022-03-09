@@ -1,0 +1,681 @@
+{
+	"UnitsData": {
+		"0": {
+			"UnitType": 0,
+			"Name": "SmallCargo",
+			"IsFleet": true,
+			"IsCivilUnit": true,
+			"ResourcesCost": {
+				"Metal": 2000,
+				"Crystal": 2000,
+				"Deuterium": 0
+			},
+			"Points": 4000,
+			"BaseHP": 400,
+			"BaseShieldValue": 10,
+			"BaseDamage": 5,
+			"Capacity": 5000,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 1,
+					"BaseSpeed": 5000,
+					"FuelConsumption": 10,
+					"MinLevelOfTechnologyTypeRequired": 0
+				},
+				{
+					"TechnologyType": 2,
+					"BaseSpeed": 10000,
+					"FuelConsumption": 20,
+					"MinLevelOfTechnologyTypeRequired": 5
+				}
+			]
+		},
+		"1": {
+			"UnitType": 1,
+			"Name": "LargeCargo",
+			"IsFleet": true,
+			"IsCivilUnit": true,
+			"ResourcesCost": {
+				"Metal": 6000,
+				"Crystal": 6000,
+				"Deuterium": 0
+			},
+			"Points": 12000,
+			"BaseHP": 1200,
+			"BaseShieldValue": 25,
+			"BaseDamage": 5,
+			"Capacity": 25000,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 1,
+					"BaseSpeed": 7500,
+					"FuelConsumption": 50,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"2": {
+			"UnitType": 2,
+			"Name": "LightFighter",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 3000,
+				"Crystal": 1000,
+				"Deuterium": 0
+			},
+			"Points": 4000,
+			"BaseHP": 400,
+			"BaseShieldValue": 10,
+			"BaseDamage": 50,
+			"Capacity": 50,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 1,
+					"BaseSpeed": 12500,
+					"FuelConsumption": 20,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"3": {
+			"UnitType": 3,
+			"Name": "HeavyFighter",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 6000,
+				"Crystal": 4000,
+				"Deuterium": 0
+			},
+			"Points": 10000,
+			"BaseHP": 1000,
+			"BaseShieldValue": 25,
+			"BaseDamage": 150,
+			"Capacity": 100,
+			"FastGuns": {
+				"0": 3,
+				"8": 5,
+				"21": 5,
+				"22": 5
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 2,
+					"BaseSpeed": 10000,
+					"FuelConsumption": 75,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"4": {
+			"UnitType": 4,
+			"Name": "Cruiser",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 20000,
+				"Crystal": 7000,
+				"Deuterium": 2000
+			},
+			"Points": 27000,
+			"BaseHP": 2700,
+			"BaseShieldValue": 50,
+			"BaseDamage": 400,
+			"Capacity": 800,
+			"FastGuns": {
+				"2": 6,
+				"8": 5,
+				"21": 5,
+				"22": 5,
+				"15": 10
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 2,
+					"BaseSpeed": 15000,
+					"FuelConsumption": 300,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"5": {
+			"UnitType": 5,
+			"Name": "Battleship",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 45000,
+				"Crystal": 15000,
+				"Deuterium": 0
+			},
+			"Points": 60000,
+			"BaseHP": 6000,
+			"BaseShieldValue": 200,
+			"BaseDamage": 1000,
+			"Capacity": 1500,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5,
+				"14": 10
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 3,
+					"BaseSpeed": 10000,
+					"FuelConsumption": 500,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"6": {
+			"UnitType": 6,
+			"Name": "Colonyship",
+			"IsFleet": true,
+			"IsCivilUnit": true,
+			"ResourcesCost": {
+				"Metal": 10000,
+				"Crystal": 20000,
+				"Deuterium": 10000
+			},
+			"Points": 30000,
+			"BaseHP": 3000,
+			"BaseShieldValue": 100,
+			"BaseDamage": 50,
+			"Capacity": 2500,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 2,
+					"BaseSpeed": 7500,
+					"FuelConsumption": 1000,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"7": {
+			"UnitType": 7,
+			"Name": "Recycler",
+			"IsFleet": true,
+			"IsCivilUnit": true,
+			"ResourcesCost": {
+				"Metal": 10000,
+				"Crystal": 6000,
+				"Deuterium": 2000
+			},
+			"Points": 16000,
+			"BaseHP": 1600,
+			"BaseShieldValue": 10,
+			"BaseDamage": 1,
+			"Capacity": 20000,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 1,
+					"BaseSpeed": 2000,
+					"FuelConsumption": 300,
+					"MinLevelOfTechnologyTypeRequired": 0
+				},
+				{
+					"TechnologyType": 2,
+					"BaseSpeed": 4000,
+					"FuelConsumption": 600,
+					"MinLevelOfTechnologyTypeRequired": 17
+				},
+				{
+					"TechnologyType": 3,
+					"BaseSpeed": 6000,
+					"FuelConsumption": 900,
+					"MinLevelOfTechnologyTypeRequired": 15
+				}
+			]
+		},
+		"8": {
+			"UnitType": 8,
+			"Name": "Probe",
+			"IsFleet": true,
+			"IsCivilUnit": true,
+			"ResourcesCost": {
+				"Metal": 0,
+				"Crystal": 1000,
+				"Deuterium": 0
+			},
+			"Points": 1000,
+			"BaseHP": 100,
+			"BaseShieldValue": 0,
+			"BaseDamage": 0,
+			"Capacity": 5,
+			"FastGuns": {
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 1,
+					"BaseSpeed": 100000000,
+					"FuelConsumption": 1,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"9": {
+			"UnitType": 9,
+			"Name": "Bomber",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 50000,
+				"Crystal": 25000,
+				"Deuterium": 15000
+			},
+			"Points": 75000,
+			"BaseHP": 7500,
+			"BaseShieldValue": 500,
+			"BaseDamage": 1000,
+			"Capacity": 500,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5,
+				"15": 20,
+				"16": 20,
+				"17": 10,
+				"18": 5,
+				"19": 10,
+				"20": 5
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 2,
+					"BaseSpeed": 4000,
+					"FuelConsumption": 700,
+					"MinLevelOfTechnologyTypeRequired": 0
+				},
+				{
+					"TechnologyType": 3,
+					"BaseSpeed": 5000,
+					"FuelConsumption": 700,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"10": {
+			"UnitType": 10,
+			"Name": "Destroyer",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 60000,
+				"Crystal": 50000,
+				"Deuterium": 15000
+			},
+			"Points": 110000,
+			"BaseHP": 11000,
+			"BaseShieldValue": 500,
+			"BaseDamage": 2000,
+			"Capacity": 2000,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5,
+				"12": 2,
+				"16": 10
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 2,
+					"BaseSpeed": 5000,
+					"FuelConsumption": 1000,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"11": {
+			"UnitType": 11,
+			"Name": "Deathstar",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 5000000,
+				"Crystal": 4000000,
+				"Deuterium": 1000000
+			},
+			"Points": 9000000,
+			"BaseHP": 900000,
+			"BaseShieldValue": 50000,
+			"BaseDamage": 200000,
+			"Capacity": 1000000,
+			"FastGuns": {
+				"8": 1250,
+				"21": 1250,
+				"0": 250,
+				"1": 250,
+				"2": 200,
+				"3": 100,
+				"4": 33,
+				"5": 30,
+				"6": 250,
+				"7": 250,
+				"9": 25,
+				"10": 5,
+				"12": 15,
+				"14": 10,
+				"13": 30,
+				"22": 1250,
+				"15": 200,
+				"16": 200,
+				"17": 100,
+				"19": 100,
+				"18": 50
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 3,
+					"BaseSpeed": 100,
+					"FuelConsumption": 1,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"12": {
+			"UnitType": 12,
+			"Name": "Battlecruiser",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 30000,
+				"Crystal": 40000,
+				"Deuterium": 15000
+			},
+			"Points": 70000,
+			"BaseHP": 7000,
+			"BaseShieldValue": 400,
+			"BaseDamage": 700,
+			"Capacity": 750,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5,
+				"0": 3,
+				"1": 3,
+				"3": 4,
+				"4": 4,
+				"5": 7
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 2,
+					"BaseSpeed": 10000,
+					"FuelConsumption": 250,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"13": {
+			"UnitType": 13,
+			"Name": "Reaper",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 85000,
+				"Crystal": 55000,
+				"Deuterium": 20000
+			},
+			"Points": 140000,
+			"BaseHP": 14000,
+			"BaseShieldValue": 700,
+			"BaseDamage": 2800,
+			"Capacity": 10000,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5,
+				"5": 7,
+				"9": 4,
+				"10": 3
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 3,
+					"BaseSpeed": 7000,
+					"FuelConsumption": 1100,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"14": {
+			"UnitType": 14,
+			"Name": "Pathfinder",
+			"IsFleet": true,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 8000,
+				"Crystal": 15000,
+				"Deuterium": 8000
+			},
+			"Points": 23000,
+			"BaseHP": 2300,
+			"BaseShieldValue": 100,
+			"BaseDamage": 200,
+			"Capacity": 10000,
+			"FastGuns": {
+				"8": 5,
+				"21": 5,
+				"22": 5,
+				"4": 3,
+				"2": 3,
+				"3": 2
+			},
+			"DriveTechnologies": [
+				{
+					"TechnologyType": 3,
+					"BaseSpeed": 12000,
+					"FuelConsumption": 300,
+					"MinLevelOfTechnologyTypeRequired": 0
+				}
+			]
+		},
+		"15": {
+			"UnitType": 15,
+			"Name": "RocketLauncher",
+			"IsFleet": false,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 2000,
+				"Crystal": 0,
+				"Deuterium": 0
+			},
+			"Points": 2000,
+			"BaseHP": 200,
+			"BaseShieldValue": 20,
+			"BaseDamage": 80,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		},
+		"16": {
+			"UnitType": 16,
+			"Name": "LightLaser",
+			"IsFleet": false,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 1500,
+				"Crystal": 500,
+				"Deuterium": 0
+			},
+			"Points": 2000,
+			"BaseHP": 200,
+			"BaseShieldValue": 25,
+			"BaseDamage": 100,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		},
+		"17": {
+			"UnitType": 17,
+			"Name": "HeavyLaser",
+			"IsFleet": false,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 6000,
+				"Crystal": 2000,
+				"Deuterium": 0
+			},
+			"Points": 8000,
+			"BaseHP": 800,
+			"BaseShieldValue": 100,
+			"BaseDamage": 250,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		},
+		"18": {
+			"UnitType": 18,
+			"Name": "GaussCannon",
+			"IsFleet": false,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 20000,
+				"Crystal": 15000,
+				"Deuterium": 2000
+			},
+			"Points": 35000,
+			"BaseHP": 3500,
+			"BaseShieldValue": 200,
+			"BaseDamage": 1100,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		},
+		"19": {
+			"UnitType": 19,
+			"Name": "IonCannon",
+			"IsFleet": false,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 5000,
+				"Crystal": 3000,
+				"Deuterium": 0
+			},
+			"Points": 8000,
+			"BaseHP": 800,
+			"BaseShieldValue": 500,
+			"BaseDamage": 150,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		},
+		"20": {
+			"UnitType": 20,
+			"Name": "PlasmaTurret",
+			"IsFleet": false,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 50000,
+				"Crystal": 50000,
+				"Deuterium": 30000
+			},
+			"Points": 100000,
+			"BaseHP": 10000,
+			"BaseShieldValue": 300,
+			"BaseDamage": 3000,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		},
+		"21": {
+			"UnitType": 21,
+			"Name": "SolarSatelite",
+			"IsFleet": false,
+			"IsCivilUnit": true,
+			"ResourcesCost": {
+				"Metal": 0,
+				"Crystal": 2000,
+				"Deuterium": 500
+			},
+			"Points": 2000,
+			"BaseHP": 200,
+			"BaseShieldValue": 1,
+			"BaseDamage": 1,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		},
+		"22": {
+			"UnitType": 22,
+			"Name": "Crawler",
+			"IsFleet": false,
+			"IsCivilUnit": true,
+			"ResourcesCost": {
+				"Metal": 2000,
+				"Crystal": 2000,
+				"Deuterium": 1000
+			},
+			"Points": 4000,
+			"BaseHP": 400,
+			"BaseShieldValue": 1,
+			"BaseDamage": 1,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		},
+		"23": {
+			"UnitType": 23,
+			"Name": "SmallDome",
+			"IsFleet": false,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 10000,
+				"Crystal": 10000,
+				"Deuterium": 0
+			},
+			"Points": 20000,
+			"BaseHP": 2000,
+			"BaseShieldValue": 2000,
+			"BaseDamage": 1,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		},
+		"24": {
+			"UnitType": 24,
+			"Name": "LargeDome",
+			"IsFleet": false,
+			"IsCivilUnit": false,
+			"ResourcesCost": {
+				"Metal": 50000,
+				"Crystal": 50000,
+				"Deuterium": 0
+			},
+			"Points": 100000,
+			"BaseHP": 10000,
+			"BaseShieldValue": 10000,
+			"BaseDamage": 1,
+			"Capacity": 0,
+			"FastGuns": {},
+			"DriveTechnologies": []
+		}
+	}
+}		
