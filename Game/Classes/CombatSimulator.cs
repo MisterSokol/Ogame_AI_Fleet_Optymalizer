@@ -53,8 +53,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		private double GetAttackerFleetToDefenderRatio(IUnitForces attackerFleet, IUnitForces defenderUnits)
 		{
-			//return attackerFleet.TacticalPower() / defenderUnits.TacticalPower();
-			return 1.0;
+			return attackerFleet.TacticalPower() / defenderUnits.TacticalPower();
 		}
 
 		private ICombatResult RunSingleSimulation(IInputData inputData, IUnitForces attackerFleet, IUnitForces defenderUnits)

@@ -10,7 +10,6 @@
 				"Crystal": 2000,
 				"Deuterium": 0
 			},
-			"Points": 4000,
 			"BaseHP": 400,
 			"BaseShieldValue": 10,
 			"BaseDamage": 5,
@@ -45,7 +44,6 @@
 				"Crystal": 6000,
 				"Deuterium": 0
 			},
-			"Points": 12000,
 			"BaseHP": 1200,
 			"BaseShieldValue": 25,
 			"BaseDamage": 5,
@@ -74,7 +72,6 @@
 				"Crystal": 1000,
 				"Deuterium": 0
 			},
-			"Points": 4000,
 			"BaseHP": 400,
 			"BaseShieldValue": 10,
 			"BaseDamage": 50,
@@ -103,7 +100,6 @@
 				"Crystal": 4000,
 				"Deuterium": 0
 			},
-			"Points": 10000,
 			"BaseHP": 1000,
 			"BaseShieldValue": 25,
 			"BaseDamage": 150,
@@ -133,7 +129,6 @@
 				"Crystal": 7000,
 				"Deuterium": 2000
 			},
-			"Points": 27000,
 			"BaseHP": 2700,
 			"BaseShieldValue": 50,
 			"BaseDamage": 400,
@@ -164,7 +159,6 @@
 				"Crystal": 15000,
 				"Deuterium": 0
 			},
-			"Points": 60000,
 			"BaseHP": 6000,
 			"BaseShieldValue": 200,
 			"BaseDamage": 1000,
@@ -194,7 +188,6 @@
 				"Crystal": 20000,
 				"Deuterium": 10000
 			},
-			"Points": 30000,
 			"BaseHP": 3000,
 			"BaseShieldValue": 100,
 			"BaseDamage": 50,
@@ -223,7 +216,6 @@
 				"Crystal": 6000,
 				"Deuterium": 2000
 			},
-			"Points": 16000,
 			"BaseHP": 1600,
 			"BaseShieldValue": 10,
 			"BaseDamage": 1,
@@ -264,7 +256,6 @@
 				"Crystal": 1000,
 				"Deuterium": 0
 			},
-			"Points": 1000,
 			"BaseHP": 100,
 			"BaseShieldValue": 0,
 			"BaseDamage": 0,
@@ -290,7 +281,6 @@
 				"Crystal": 25000,
 				"Deuterium": 15000
 			},
-			"Points": 75000,
 			"BaseHP": 7500,
 			"BaseShieldValue": 500,
 			"BaseDamage": 1000,
@@ -331,7 +321,6 @@
 				"Crystal": 50000,
 				"Deuterium": 15000
 			},
-			"Points": 110000,
 			"BaseHP": 11000,
 			"BaseShieldValue": 500,
 			"BaseDamage": 2000,
@@ -362,7 +351,6 @@
 				"Crystal": 4000000,
 				"Deuterium": 1000000
 			},
-			"Points": 9000000,
 			"BaseHP": 900000,
 			"BaseShieldValue": 50000,
 			"BaseDamage": 200000,
@@ -409,7 +397,6 @@
 				"Crystal": 40000,
 				"Deuterium": 15000
 			},
-			"Points": 70000,
 			"BaseHP": 7000,
 			"BaseShieldValue": 400,
 			"BaseDamage": 700,
@@ -443,7 +430,6 @@
 				"Crystal": 55000,
 				"Deuterium": 20000
 			},
-			"Points": 140000,
 			"BaseHP": 14000,
 			"BaseShieldValue": 700,
 			"BaseDamage": 2800,
@@ -475,7 +461,6 @@
 				"Crystal": 15000,
 				"Deuterium": 8000
 			},
-			"Points": 23000,
 			"BaseHP": 2300,
 			"BaseShieldValue": 100,
 			"BaseDamage": 200,
@@ -507,7 +492,6 @@
 				"Crystal": 0,
 				"Deuterium": 0
 			},
-			"Points": 2000,
 			"BaseHP": 200,
 			"BaseShieldValue": 20,
 			"BaseDamage": 80,
@@ -525,7 +509,6 @@
 				"Crystal": 500,
 				"Deuterium": 0
 			},
-			"Points": 2000,
 			"BaseHP": 200,
 			"BaseShieldValue": 25,
 			"BaseDamage": 100,
@@ -543,7 +526,6 @@
 				"Crystal": 2000,
 				"Deuterium": 0
 			},
-			"Points": 8000,
 			"BaseHP": 800,
 			"BaseShieldValue": 100,
 			"BaseDamage": 250,
@@ -561,7 +543,6 @@
 				"Crystal": 15000,
 				"Deuterium": 2000
 			},
-			"Points": 35000,
 			"BaseHP": 3500,
 			"BaseShieldValue": 200,
 			"BaseDamage": 1100,
@@ -579,7 +560,6 @@
 				"Crystal": 3000,
 				"Deuterium": 0
 			},
-			"Points": 8000,
 			"BaseHP": 800,
 			"BaseShieldValue": 500,
 			"BaseDamage": 150,
@@ -597,7 +577,6 @@
 				"Crystal": 50000,
 				"Deuterium": 30000
 			},
-			"Points": 100000,
 			"BaseHP": 10000,
 			"BaseShieldValue": 300,
 			"BaseDamage": 3000,
@@ -615,7 +594,6 @@
 				"Crystal": 2000,
 				"Deuterium": 500
 			},
-			"Points": 2000,
 			"BaseHP": 200,
 			"BaseShieldValue": 1,
 			"BaseDamage": 1,
@@ -633,7 +611,6 @@
 				"Crystal": 2000,
 				"Deuterium": 1000
 			},
-			"Points": 4000,
 			"BaseHP": 400,
 			"BaseShieldValue": 1,
 			"BaseDamage": 1,
@@ -651,7 +628,6 @@
 				"Crystal": 10000,
 				"Deuterium": 0
 			},
-			"Points": 20000,
 			"BaseHP": 2000,
 			"BaseShieldValue": 2000,
 			"BaseDamage": 1,
@@ -669,7 +645,6 @@
 				"Crystal": 50000,
 				"Deuterium": 0
 			},
-			"Points": 100000,
 			"BaseHP": 10000,
 			"BaseShieldValue": 10000,
 			"BaseDamage": 1,

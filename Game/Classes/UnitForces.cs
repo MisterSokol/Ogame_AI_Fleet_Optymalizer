@@ -131,13 +131,12 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public double TacticalPower()
 		{
-			// TODO: It is now not working properly
 			var fleetUnits = this.allUnits
 				.Where(x => gameData.UnitsData[x.UnitType].IsFleet)
 				.ToList();
 
-			var fleetPoints = fleetUnits.Sum(x => x.Points);
-			var civilPoints = fleetUnits.Where(x => gameData.UnitsData[x.UnitType].IsCivilUnit).Sum(x => x.Points);
+			var fleetPoints = fleetUnits.Where(x => !gameData.UnitsData[x.UnitType].IsCivilUnit).Sum(x => x.GetUnitResourcesCost().GetTotal());
+			var civilPoints = fleetUnits.Where(x => gameData.UnitsData[x.UnitType].IsCivilUnit).Sum(x => x.GetUnitResourcesCost().GetTotal());
 
 			return (double)fleetPoints + (double)civilPoints / 4;
 		}

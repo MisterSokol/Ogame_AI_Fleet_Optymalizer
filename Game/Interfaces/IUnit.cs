@@ -12,7 +12,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		int ShieldValue { get; }
 		int Damage { get; }
 		bool IsAlive { get; }
-		int Points { get; }
 		int Speed { get; }
 		int FuelConsumption { get; }
 

@@ -16,7 +16,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public int ShieldValue { get; private set; }
 		public int Damage { get; }
 		public bool IsAlive { get; private set; }
-		public int Points => this.maxHP * 10;
 		public int Speed { get; private set; }
 		public int FuelConsumption { get; private set; }
 
