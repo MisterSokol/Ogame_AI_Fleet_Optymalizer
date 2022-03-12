@@ -1,5 +1,6 @@
 ﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Interfaces;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes;
+using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Enums;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
 using System;
@@ -220,12 +221,20 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 		private int GetFleetSpeedMinFitnessValue()
 		{
-			return this.attackerMaxForces.UnitTypesRepresentatives.Min(x => x.Speed);
+			var unitsExceptProbe = this.attackerMaxForces.UnitTypesRepresentatives.Where(x => x.UnitType != UnitType.Probe).ToList();
+
+			return unitsExceptProbe.Count > 0
+				? unitsExceptProbe.Min(x => x.Speed)
+				: 0;
 		}
 
 		private int GetFleetSpeedMaxFitnessValue()
 		{
-			return this.attackerMaxForces.UnitTypesRepresentatives.Max(x => x.Speed);
+			var unitsExceptProbe = this.attackerMaxForces.UnitTypesRepresentatives.Where(x => x.UnitType != UnitType.Probe).ToList();
+
+			return unitsExceptProbe.Count > 0
+				? unitsExceptProbe.Max(x => x.Speed)
+				: 0;
 		}
 	}
 }

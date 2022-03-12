@@ -3,6 +3,7 @@ using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Enums;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
@@ -18,12 +19,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public IUnitForces Create(IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
 		{
 			var units = new List<IUnit>();
-			var slowestSpeed = int.MaxValue;
 			var unitTypesRepresentatives = new List<IUnit>();
 
-			foreach (var unitType in Enum.GetValues(typeof(UnitType)))
+			foreach (var unitType in Enum.GetValues(typeof(UnitType)).Cast<UnitType>())
 			{
-				if ((UnitType)unitType == UnitType.SmallDome || (UnitType)unitType == UnitType.LargeDome)
+				if (unitType == UnitType.SmallDome || unitType == UnitType.LargeDome)
 				{
 					continue;
 				}
@@ -32,24 +32,22 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 				if (unitCount > 0)
 				{
-					var unitsOfType = this.unitFactory.CreateUnits((UnitType)unitType, inputData, inputPlayerData, gameData, unitCount);
+					var unitsOfType = this.unitFactory.CreateUnits(unitType, inputData, inputPlayerData, gameData, unitCount);
 
 					units.AddRange(unitsOfType);
 
-					slowestSpeed = Math.Min(slowestSpeed, unitsOfType[0].Speed);
 					unitTypesRepresentatives.Add(unitsOfType[0]);
 				}
 			}
 
 			this.AddDomesToUnits(units, unitTypesRepresentatives, inputData, inputPlayerData, gameData);
 
-			return new UnitForces(gameData, units, slowestSpeed, unitTypesRepresentatives);
+			return new UnitForces(gameData, units, unitTypesRepresentatives);
 		}
 
 		public IUnitForces CreateDefender(IInputData inputData, IGameData gameData)
 		{
 			var units = new List<IUnit>();
-			var slowestSpeed = int.MaxValue;
 			var unitTypesRepresentatives = new List<IUnit>();
 
 			foreach (var unitType in Enum.GetValues(typeof(UnitType)))
@@ -68,18 +66,16 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 					//Console.WriteLine($"End creating {unitType}, amount: {unitCount}");
 					units.AddRange(unitsOfType);
 
-					slowestSpeed = Math.Min(slowestSpeed, unitsOfType[0].Speed);
 					unitTypesRepresentatives.Add(unitsOfType[0]);
 				}
 			}
 
-			return new UnitForces(gameData, units, slowestSpeed, unitTypesRepresentatives);
+			return new UnitForces(gameData, units, unitTypesRepresentatives);
 		}
 
 		public IUnitForces CreateAttacker(IInputData inputData, Fleet fleet, IGameData gameData)
 		{
 			var units = new List<IUnit>();
-			var slowestSpeed = int.MaxValue;
 			var unitTypesRepresentatives = new List<IUnit>();
 
 			foreach (var fleetUnitType in fleet.FleetUnits)
@@ -90,12 +86,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 					units.AddRange(unitsOfType);
 
-					slowestSpeed = Math.Min(slowestSpeed, unitsOfType[0].Speed);
 					unitTypesRepresentatives.Add(unitsOfType[0]);
 				}
 			}
 
-			return new UnitForces(gameData, units, slowestSpeed, unitTypesRepresentatives);
+			return new UnitForces(gameData, units, unitTypesRepresentatives);
 		}
 
 		private int GetUnitCount(IInputPlayerData inputPlayerData, string unitTypeName)

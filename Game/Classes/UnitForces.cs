@@ -1,4 +1,5 @@
 ﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Interfaces;
+using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Enums;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
 using System;
@@ -16,13 +17,13 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		private List<IUnit> aliveUnits;
 		private List<IUnit> explodedUnits;
 
-		public int FleetSpeed { get; }
+		public int FleetSpeed { get; private set; }
 		public List<IUnit> UnitTypesRepresentatives { get; }
 
-		public UnitForces(IGameData gameData, List<IUnit> units, int fleetSpeed, List<IUnit> unitTypesRepresentatives)
+		public UnitForces(IGameData gameData, List<IUnit> units, List<IUnit> unitTypesRepresentatives)
 		{
 			this.gameData = gameData;
-			this.FleetSpeed = fleetSpeed;
+			this.FleetSpeed = this.GetFleetSpeed(unitTypesRepresentatives);
 
 			this.allUnits = units;
 			this.aliveUnits = this.allUnits;
@@ -34,7 +35,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public IUnitForces Copy()
 		{
-			return new UnitForces(this.gameData, this.allUnits.Select(x => (IUnit)x.Clone()).ToList(), this.FleetSpeed, this.UnitTypesRepresentatives.Select(x => (IUnit)x.Clone()).ToList());
+			return new UnitForces(this.gameData, this.allUnits.Select(x => (IUnit)x.Clone()).ToList(), this.UnitTypesRepresentatives.Select(x => (IUnit)x.Clone()).ToList());
 		}
 
 		public Resources GetDebrisResources(bool includeAliveUnits = false)
@@ -166,6 +167,15 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				.ToList();
 
 			this.aliveUnits = this.allUnits;
+		}
+
+		private int GetFleetSpeed(List<IUnit> unitTypesRepresentatives)
+		{
+			var unitsExceptProbe = unitTypesRepresentatives.Where(x => x.UnitType != UnitType.Probe).ToList();
+
+			return unitsExceptProbe.Count > 0
+				? unitsExceptProbe.Min(x => x.Speed)
+				: 0;
 		}
 	}
 }
