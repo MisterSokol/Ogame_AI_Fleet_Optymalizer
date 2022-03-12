@@ -22,11 +22,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public bool CheckIfHitTheChance(int percentage)
 		{
-			if (percentage > 100 || percentage < 0)
-			{
-				throw new Exception("Percentage value of CheckIfHitTheChance must be from <0, 100> range");
-			}
-
 			return RandomFromRange(0, 100) < percentage;
 		}
 
