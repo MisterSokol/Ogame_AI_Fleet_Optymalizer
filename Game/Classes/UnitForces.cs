@@ -102,24 +102,20 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 				defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit);
 
-				if (!this.ShouldAttackAgain(attackerUnit, defenderTargetedUnit))
+				if (!ShouldAttackAgain(this.gameData, this.randomizer, attackerUnit, defenderTargetedUnit))
 				{
 					i++;
 				}
 			}
 		}
 
-		private bool ShouldAttackAgain(IUnit attackerUnit, IUnit defenderTargetedUnit)
+		private static bool ShouldAttackAgain(IGameData gameData, Randomizer randomizer, IUnit attackerUnit, IUnit defenderTargetedUnit)
 		{
-			if (this.gameData.UnitsData[attackerUnit.UnitType].FastGuns.ContainsKey(defenderTargetedUnit.UnitType))
-			{
-				var fastGunsValue = this.gameData.UnitsData[attackerUnit.UnitType].FastGuns[defenderTargetedUnit.UnitType];
+			var tryGetValueSuccess = gameData.UnitsData[attackerUnit.UnitType].FastGuns.TryGetValue(defenderTargetedUnit.UnitType, out var fastGunsValue);
 
-				return fastGunsValue != 0
-					&& this.randomizer.CheckIfHitTheChance((fastGunsValue - 1) * 100 / fastGunsValue);
-			}
-
-			return false;
+			return tryGetValueSuccess
+				? randomizer.CheckIfHitTheChance((fastGunsValue - 1) * 100 / fastGunsValue)
+				: false;
 		}
 
 		public void EndBattle()
