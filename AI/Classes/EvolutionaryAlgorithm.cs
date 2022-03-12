@@ -326,9 +326,12 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 		private List<Individual> InitializeFirstGeneration(IConfigurationData configuration, IInputData input)
 		{
-			var randomGeneration = new List<Individual>(configuration.GenerationSize);
+			var randomGeneration = new List<Individual>(configuration.GenerationSize)
+			{
+				new Individual(this.maxFleet.Copy(), fitnessValue: 0)
+			};
 
-			for (int i = 0; i < configuration.GenerationSize; i++)
+			while (randomGeneration.Count < configuration.GenerationSize)
 			{
 				var randomFleet = new Fleet();
 
