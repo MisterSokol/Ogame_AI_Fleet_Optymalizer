@@ -1,10 +1,14 @@
 ﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Enums;
+using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
 	public class Unit : IUnit
 	{
+		private int hp;
+		private int shieldValue;
+
 		private readonly int maxHP;
 		private readonly int maxShieldValue;
 
@@ -12,8 +16,26 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public Resources Debris { get; }
 		public int ResourcesCapacity { get; }
 		public Resources UnitResourcesCost { get; }
-		public int HP { get; private set; }
-		public int ShieldValue { get; private set; }
+		public int HP 
+		{
+			get => hp;
+			private set
+			{
+				this.hp = value;
+				this.MaxHpPercentage = this.hp / this.maxHP * 100;
+			}
+		}
+		public int MaxHpPercentage { get; private set; }
+		public int ShieldValue 
+		{
+			get => this.shieldValue;
+			private set
+			{
+				this.shieldValue = value;
+				this.MinApplicableDamage = this.shieldValue / 100;
+			}
+		}
+		public int MinApplicableDamage { get; private set; }
 		public int Damage { get; }
 		public bool IsAlive { get; private set; }
 		public int Speed { get; private set; }
@@ -74,7 +96,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public void TakeHit(Randomizer randomizer, IUnit enemyUnit)
 		{
-			if (!this.IsAlive || this.IsDamageLessOrEqualToOnePercentOfShieldValue(enemyUnit))
+			if (!this.IsAlive || enemyUnit.Damage < this.MinApplicableDamage)
 			{
 				return;
 			}
@@ -107,14 +129,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		private bool CheckIfExploded(Randomizer randomizer)
 		{
-			var percentOfMaxHP = (double)this.HP / this.maxHP * 100;
-
-			return percentOfMaxHP < 70 && randomizer.CheckIfHitTheChance(100 - (int)percentOfMaxHP);
-		}
-
-		private bool IsDamageLessOrEqualToOnePercentOfShieldValue(IUnit enemyUnit)
-		{
-			return ((double)enemyUnit.Damage / this.ShieldValue * 100) <= 1.0;
+			return this.MaxHpPercentage <= 70 && randomizer.CheckIfHitTheChance(100 - this.MaxHpPercentage);
 		}
 	}
 }
