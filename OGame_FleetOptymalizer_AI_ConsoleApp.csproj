@@ -82,6 +82,7 @@
     <Compile Include="Game\Enums\UnitType.cs" />
     <Compile Include="Game\Enums\WinnerType.cs" />
     <Compile Include="Game\Helpers\CalculationHelper.cs" />
+    <Compile Include="Game\Helpers\FastRandom.cs" />
     <Compile Include="Game\Interfaces\ICombatResult.cs" />
     <Compile Include="Game\Interfaces\ICombatResultFactory.cs" />
     <Compile Include="Game\Interfaces\ICombatSimulator.cs" />

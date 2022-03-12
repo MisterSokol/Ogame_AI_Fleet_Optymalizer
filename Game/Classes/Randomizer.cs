@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SharpNeatLib.Maths;
+using System;
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
 	public class Randomizer
 	{
-		private Random random = new Random();
+		private FastRandom random = new FastRandom();
 
 		public int RandomFromRange(int min, int max)
 		{
@@ -27,7 +28,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public bool RandomTrueFalse()
 		{
-			return RandomFromRange(0, 1) == 1;
+			return random.NextBool();
 		}
 
 		public int GetRandomPercentageValueOfNumber(int number)
