@@ -134,6 +134,16 @@ namespace SharpNeatLib.Maths
 			return (int)((REAL_UNIT_INT * (int)(0x7FFFFFFF & (w = (w ^ (w >> 19)) ^ (t ^ (t >> 8))))) * upperBound);
 		}
 
+		public int Next0to100()
+		{
+			uint t = (x ^ (x << 11));
+			x = y; y = z; z = w;
+
+			// The explicit int cast before the first multiplication gives better performance.
+			// See comments in NextDouble.
+			return (int)((REAL_UNIT_INT * (int)(0x7FFFFFFF & (w = (w ^ (w >> 19)) ^ (t ^ (t >> 8))))) * 101);
+		}
+
 		/// <summary>
 		/// Generates a random int over the range lowerBound to upperBound-1, and not including upperBound.
 		/// upperBound must be >= lowerBound. lowerBound may be negative.

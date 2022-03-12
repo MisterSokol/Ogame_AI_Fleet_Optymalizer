@@ -23,7 +23,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public bool CheckIfHitTheChance(int percentage)
 		{
-			return RandomFromRange(0, 100) < percentage;
+			return random.Next0to100() < percentage;
 		}
 
 		public bool RandomTrueFalse()
@@ -33,7 +33,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public int GetRandomPercentageValueOfNumber(int number)
 		{
-			return (int)Math.Round((double)RandomFromRange(0, 100) * number / 100 );
+			return (int)Math.Round((double)random.Next0to100() * number / 100 );
 		}
 	}
 }
