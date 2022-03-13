@@ -9,6 +9,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		private int hp;
 		private int shieldValue;
 		private bool isAlive;
+		private int minApplicableDamage;
+		private int maxHpPercentage;
 
 		private readonly int maxHP;
 		private readonly int maxShieldValue;
@@ -23,20 +25,18 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			private set
 			{
 				this.hp = value;
-				this.MaxHpPercentage = this.hp / this.maxHP * 100;
+				this.maxHpPercentage = this.hp / this.maxHP * 100;
 			}
 		}
-		public int MaxHpPercentage { get; private set; }
 		public int ShieldValue 
 		{
 			get => this.shieldValue;
 			private set
 			{
 				this.shieldValue = value;
-				this.MinApplicableDamage = this.shieldValue / 100;
+				this.minApplicableDamage = this.shieldValue / 100;
 			}
 		}
-		public int MinApplicableDamage { get; private set; }
 		public int Damage { get; }
 		public bool IsAlive => this.isAlive;
 		public int Speed { get; private set; }
@@ -97,22 +97,22 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public void TakeHit(Randomizer randomizer, int damage)
 		{
-			if (!this.isAlive || damage < this.MinApplicableDamage)
+			if (!this.isAlive || damage < this.minApplicableDamage)
 			{
 				return;
 			}
 
 			if (damage > this.shieldValue)
 			{
-				this.HP -= damage - this.shieldValue;
+				this.HP = this.hp - (damage - this.shieldValue);
 				this.ShieldValue = 0;
 			}
 			else
 			{
-				this.ShieldValue -= damage;
+				this.ShieldValue =  this.shieldValue - damage;
 			}
 
-			if (this.hp > 0 && this.MaxHpPercentage <= 70 && randomizer.CheckIfHitTheChance(100 - this.MaxHpPercentage))
+			if (this.hp > 0 && this.maxHpPercentage <= 70 && randomizer.CheckIfHitTheChance(100 - this.maxHpPercentage))
 			{
 				this.HP = 0;
 			}

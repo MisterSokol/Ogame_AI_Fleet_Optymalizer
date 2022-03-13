@@ -9,9 +9,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		UnitType UnitType { get; }
 		Resources Debris { get; }
 		int HP { get; }
-		int MaxHpPercentage { get; }
 		int ShieldValue { get; }
-		int MinApplicableDamage { get; }
 		int Damage { get; }
 		bool IsAlive { get; }
 		int Speed { get; }
