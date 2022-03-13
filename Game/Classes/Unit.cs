@@ -111,7 +111,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				this.ShieldValue -= damage;
 			}
 
-			if (this.HP > 0 && this.CheckIfExploded(randomizer))
+			if (this.HP > 0 && this.MaxHpPercentage <= 70 && randomizer.CheckIfHitTheChance(100 - this.MaxHpPercentage))
 			{
 				this.HP = 0;
 			}
@@ -125,11 +125,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public object Clone()
 		{
 			return MemberwiseClone();
-		}
-
-		private bool CheckIfExploded(Randomizer randomizer)
-		{
-			return this.MaxHpPercentage <= 70 && randomizer.CheckIfHitTheChance(100 - this.MaxHpPercentage);
 		}
 	}
 }
