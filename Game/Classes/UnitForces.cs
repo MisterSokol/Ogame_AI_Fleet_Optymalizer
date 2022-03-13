@@ -114,7 +114,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			var tryGetValueSuccess = gameData.UnitsData[attackerUnit.UnitType].FastGuns.TryGetValue(defenderTargetedUnit.UnitType, out var fastGunsValue);
 
 			return tryGetValueSuccess
-				? randomizer.CheckIfHitTheChance((fastGunsValue - 1) * 100 / fastGunsValue)
+				? randomizer.RandomFromRange(0, fastGunsValue - 1) < (fastGunsValue - 1)
 				: false;
 		}
 
