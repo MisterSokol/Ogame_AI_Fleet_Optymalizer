@@ -17,6 +17,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		private List<IUnit> aliveUnits;
 		private List<IUnit> explodedUnits;
 
+		public int AliveUnitsCount => this.aliveUnits.Count;
 		public int FleetSpeed { get; private set; }
 		public List<IUnit> UnitTypesRepresentatives { get; }
 
@@ -94,7 +95,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public void HitButDoNotUpdate(IUnitForces defenderUnit)
 		{
-			for (int i = 0; i < this.aliveUnits.Count; i++)
+			var aliveAttackersUnitsCount = this.aliveUnits.Count;
+			var aliveDefenderUnitAvailableIndexes = defenderUnit.AliveUnitsCount - 1;
+
+			for (int i = 0; i < aliveAttackersUnitsCount; i++)
 			{
 				var attackerUnit = this.aliveUnits[i];
 				var unitFastGuns = this.gameData.UnitsData[attackerUnit.UnitType].FastGuns;
@@ -102,7 +106,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 				do
 				{
-					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit();
+					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit(aliveDefenderUnitAvailableIndexes);
 					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit.Damage);
 				} 
 				while (ShouldAttackAgain(unitFastGuns, this.randomizer, defenderTargetedUnit));
@@ -123,9 +127,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.explodedUnits = this.allUnits.Where(x => !x.IsAlive).ToList();
 		}
 
-		public IUnit GetRandomAliveUnit()
+		public IUnit GetRandomAliveUnit(int aliveUnitsAvailableIndexes)
 		{
-			return this.aliveUnits[this.randomizer.RandomFromRange(0, this.aliveUnits.Count - 1)];
+			return this.aliveUnits[this.randomizer.RandomFromRange(0, aliveUnitsAvailableIndexes)];
 		}
 
 		public double TacticalPower()
