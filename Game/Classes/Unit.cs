@@ -57,8 +57,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.Debris = debris;
 			this.ResourcesCapacity = resourcesCapacity;
 			this.UnitResourcesCost = unitResourcesCost;
-			this.HP = maxHP;
 			this.maxHP = maxHP;
+			this.HP = maxHP;
 			this.ShieldValue = maxShieldValue;
 			this.maxShieldValue = maxShieldValue;
 			this.Damage = damage;
