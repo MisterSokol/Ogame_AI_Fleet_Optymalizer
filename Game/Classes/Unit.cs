@@ -101,9 +101,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				return;
 			}
 
-			if (damage > this.ShieldValue)
+			if (damage > this.shieldValue)
 			{
-				this.HP -= damage - this.ShieldValue;
+				this.HP -= damage - this.shieldValue;
 				this.ShieldValue = 0;
 			}
 			else
@@ -111,12 +111,12 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				this.ShieldValue -= damage;
 			}
 
-			if (this.HP > 0 && this.MaxHpPercentage <= 70 && randomizer.CheckIfHitTheChance(100 - this.MaxHpPercentage))
+			if (this.hp > 0 && this.MaxHpPercentage <= 70 && randomizer.CheckIfHitTheChance(100 - this.MaxHpPercentage))
 			{
 				this.HP = 0;
 			}
 
-			if (this.HP <= 0)
+			if (this.hp <= 0)
 			{
 				this.IsAlive = false;
 			}
