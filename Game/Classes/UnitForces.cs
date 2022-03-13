@@ -94,24 +94,24 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public void HitButDoNotUpdate(IUnitForces defenderUnit)
 		{
-			for (int i = 0; i < this.aliveUnits.Count; )
+			for (int i = 0; i < this.aliveUnits.Count; i++)
 			{
-				//System.Console.WriteLine($"\t\tUnit index {i}");
 				var attackerUnit = this.aliveUnits[i];
-				var defenderTargetedUnit = defenderUnit.GetRandomAliveUnit();
+				var unitFastGuns = this.gameData.UnitsData[attackerUnit.UnitType].FastGuns;
+				IUnit defenderTargetedUnit;
 
-				defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit);
-
-				if (!ShouldAttackAgain(this.gameData, this.randomizer, attackerUnit, defenderTargetedUnit))
+				do
 				{
-					i++;
-				}
+					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit();
+					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit);
+				} 
+				while (ShouldAttackAgain(unitFastGuns, this.randomizer, defenderTargetedUnit));
 			}
 		}
 
-		private static bool ShouldAttackAgain(IGameData gameData, Randomizer randomizer, IUnit attackerUnit, IUnit defenderTargetedUnit)
+		private static bool ShouldAttackAgain(Dictionary<UnitType, int> fastGuns, Randomizer randomizer, IUnit defenderTargetedUnit)
 		{
-			var tryGetValueSuccess = gameData.UnitsData[attackerUnit.UnitType].FastGuns.TryGetValue(defenderTargetedUnit.UnitType, out var fastGunsValue);
+			var tryGetValueSuccess = fastGuns.TryGetValue(defenderTargetedUnit.UnitType, out var fastGunsValue);
 
 			return tryGetValueSuccess
 				? randomizer.RandomFromRange(0, fastGunsValue - 1) < (fastGunsValue - 1)
