@@ -111,10 +111,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		private static bool ShouldAttackAgain(IGameData gameData, Randomizer randomizer, IUnit attackerUnit, IUnit defenderTargetedUnit)
 		{
-			var fastGun = gameData.UnitsData[attackerUnit.UnitType].FastGuns[defenderTargetedUnit.UnitType];
+			var tryGetValueSuccess = gameData.UnitsData[attackerUnit.UnitType].FastGuns.TryGetValue(defenderTargetedUnit.UnitType, out var fastGunsValue);
 
-			return fastGun > 0
-				? randomizer.CheckIfHitTheChance((fastGun - 1) * 100 / fastGun)
+			return tryGetValueSuccess
+				? randomizer.CheckIfHitTheChance((fastGunsValue - 1) * 100 / fastGunsValue)
 				: false;
 		}
 
