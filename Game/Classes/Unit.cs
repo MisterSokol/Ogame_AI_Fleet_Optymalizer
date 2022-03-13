@@ -94,21 +94,21 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.ShieldValue = this.maxShieldValue;
 		}
 
-		public void TakeHit(Randomizer randomizer, IUnit enemyUnit)
+		public void TakeHit(Randomizer randomizer, int damage)
 		{
-			if (!this.IsAlive || enemyUnit.Damage < this.MinApplicableDamage)
+			if (!this.IsAlive || damage < this.MinApplicableDamage)
 			{
 				return;
 			}
 
-			if (enemyUnit.Damage > this.ShieldValue)
+			if (damage > this.ShieldValue)
 			{
-				this.HP -= enemyUnit.Damage - this.ShieldValue;
+				this.HP -= damage - this.ShieldValue;
 				this.ShieldValue = 0;
 			}
 			else
 			{
-				this.ShieldValue -= enemyUnit.Damage;
+				this.ShieldValue -= damage;
 			}
 
 			if (this.HP > 0 && this.CheckIfExploded(randomizer))

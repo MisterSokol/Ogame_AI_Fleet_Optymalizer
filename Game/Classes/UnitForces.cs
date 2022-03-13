@@ -103,7 +103,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				do
 				{
 					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit();
-					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit);
+					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit.Damage);
 				} 
 				while (ShouldAttackAgain(unitFastGuns, this.randomizer, defenderTargetedUnit));
 			}
