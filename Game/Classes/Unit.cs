@@ -8,6 +8,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 	{
 		private int hp;
 		private int shieldValue;
+		private bool isAlive;
 
 		private readonly int maxHP;
 		private readonly int maxShieldValue;
@@ -37,7 +38,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		}
 		public int MinApplicableDamage { get; private set; }
 		public int Damage { get; }
-		public bool IsAlive { get; private set; }
+		public bool IsAlive => this.isAlive;
 		public int Speed { get; private set; }
 		public int FuelConsumption { get; private set; }
 
@@ -62,7 +63,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.ShieldValue = maxShieldValue;
 			this.maxShieldValue = maxShieldValue;
 			this.Damage = damage;
-			this.IsAlive = true;
+			this.isAlive = true;
 			this.Speed = speed;
 			this.FuelConsumption = fuelConsumption;
 		}
@@ -86,7 +87,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		{
 			this.HP = this.maxHP;
 			this.ShieldValue = this.maxShieldValue;
-			this.IsAlive = true;
+			this.isAlive = true;
 		}
 
 		public void RestoreShield()
@@ -96,7 +97,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public void TakeHit(Randomizer randomizer, int damage)
 		{
-			if (!this.IsAlive || damage < this.MinApplicableDamage)
+			if (!this.isAlive || damage < this.MinApplicableDamage)
 			{
 				return;
 			}
@@ -118,7 +119,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			if (this.hp <= 0)
 			{
-				this.IsAlive = false;
+				this.isAlive = false;
 			}
 		}
 
