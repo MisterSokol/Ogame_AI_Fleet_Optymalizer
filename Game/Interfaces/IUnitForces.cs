@@ -8,7 +8,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 	{
 		int AliveUnitsCount { get; }
 		int FleetSpeed { get; }
-		List<IUnit> UnitTypesRepresentatives { get; }
+		List<Unit> UnitTypesRepresentatives { get; }
 
 		void ResetToFullForces();
 		bool HasUnitsLeft();
@@ -18,7 +18,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		long GetFleetResourcesCapacity();
 		void EndBattle();
 		void EndRound();
-		IUnit GetRandomAliveUnit(int aliveUnitsAvailableIndexes);
+		Unit GetRandomAliveUnit(int aliveUnitsAvailableIndexes);
 		double TacticalPower();
 		Resources GetFlightCost(IInputData inputData, bool forceEveryFleetMaxSpeed = false);
 

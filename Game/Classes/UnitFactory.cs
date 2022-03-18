@@ -9,20 +9,20 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
 	public class UnitFactory : IUnitFactory
 	{
-		public List<IUnit> CreateUnits(UnitType unitType, IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData, int count)
+		public List<Unit> CreateUnits(UnitType unitType, IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData, int count)
 		{
-			var units = new List<IUnit>(count);
+			var units = new List<Unit>(count);
 			var oryginal = this.CreateUnit(unitType, inputData, inputPlayerData, gameData);
 
 			for (int i = 0; i < count; i++)
 			{
-				units.Add((IUnit)oryginal.Clone());
+				units.Add((Unit)oryginal.Clone());
 			}
 
 			return units;
 		}
 
-		public IUnit CreateUnit(UnitType unitType, IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
+		public Unit CreateUnit(UnitType unitType, IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
 		{
 			var unitGameData = gameData.UnitsData[unitType];
 			var driveTechnologies = inputPlayerData.GetDriveTechnologies();

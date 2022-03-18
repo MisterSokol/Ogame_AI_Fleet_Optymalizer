@@ -14,22 +14,22 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		private readonly int[,] rapidFireTable;
 		private readonly Randomizer randomizer;
 
-		private List<IUnit> allUnits;
-		private List<IUnit> aliveUnits;
-		private List<IUnit> explodedUnits;
+		private List<Unit> allUnits;
+		private List<Unit> aliveUnits;
+		private List<Unit> explodedUnits;
 
 		public int AliveUnitsCount => this.aliveUnits.Count;
 		public int FleetSpeed { get; private set; }
-		public List<IUnit> UnitTypesRepresentatives { get; }
+		public List<Unit> UnitTypesRepresentatives { get; }
 
-		public UnitForces(IGameData gameData, List<IUnit> units, List<IUnit> unitTypesRepresentatives)
+		public UnitForces(IGameData gameData, List<Unit> units, List<Unit> unitTypesRepresentatives)
 		{
 			this.gameData = gameData;
 			this.FleetSpeed = this.GetFleetSpeed(unitTypesRepresentatives);
 
 			this.allUnits = units;
 			this.aliveUnits = this.allUnits;
-			this.explodedUnits = new List<IUnit>();
+			this.explodedUnits = new List<Unit>();
 			this.UnitTypesRepresentatives = unitTypesRepresentatives;
 
 			this.randomizer = new Randomizer();
@@ -39,7 +39,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public IUnitForces Copy()
 		{
-			return new UnitForces(this.gameData, this.allUnits.Select(x => (IUnit)x.Clone()).ToList(), this.UnitTypesRepresentatives.Select(x => (IUnit)x.Clone()).ToList());
+			return new UnitForces(this.gameData, this.allUnits.Select(x => (Unit)x.Clone()).ToList(), this.UnitTypesRepresentatives.Select(x => (Unit)x.Clone()).ToList());
 		}
 
 		public Resources GetDebrisResources(bool includeAliveUnits = false)
@@ -105,7 +105,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			{
 				var attackerUnit = this.aliveUnits[i];
 				var attackerUnitTypeValue = (int)attackerUnit.UnitType;
-				IUnit defenderTargetedUnit;
+				Unit defenderTargetedUnit;
 
 				do
 				{
@@ -116,7 +116,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			}
 		}
 
-		private static bool ShouldAttackAgain(int [,] rapidFireTable, int attackerUnitTypeValue, Randomizer randomizer, IUnit defenderTargetedUnit)
+		private static bool ShouldAttackAgain(int [,] rapidFireTable, int attackerUnitTypeValue, Randomizer randomizer, Unit defenderTargetedUnit)
 		{
 			var rapidFire = rapidFireTable[attackerUnitTypeValue, (int)defenderTargetedUnit.UnitType];
 
@@ -130,7 +130,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.explodedUnits = this.allUnits.Where(x => !x.IsAlive).ToList();
 		}
 
-		public IUnit GetRandomAliveUnit(int aliveUnitsAvailableIndexes)
+		public Unit GetRandomAliveUnit(int aliveUnitsAvailableIndexes)
 		{
 			return this.aliveUnits[this.randomizer.RandomFromRange(0, aliveUnitsAvailableIndexes)];
 		}
@@ -172,7 +172,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.aliveUnits = this.allUnits;
 		}
 
-		private int GetFleetSpeed(List<IUnit> unitTypesRepresentatives)
+		private int GetFleetSpeed(List<Unit> unitTypesRepresentatives)
 		{
 			var unitsExceptProbe = unitTypesRepresentatives.Where(x => x.UnitType != UnitType.Probe).ToList();
 

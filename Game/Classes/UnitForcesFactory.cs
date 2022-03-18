@@ -18,8 +18,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public IUnitForces Create(IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
 		{
-			var units = new List<IUnit>();
-			var unitTypesRepresentatives = new List<IUnit>();
+			var units = new List<Unit>();
+			var unitTypesRepresentatives = new List<Unit>();
 
 			foreach (var unitType in Enum.GetValues(typeof(UnitType)).Cast<UnitType>())
 			{
@@ -47,8 +47,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public IUnitForces CreateDefender(IInputData inputData, IGameData gameData)
 		{
-			var units = new List<IUnit>();
-			var unitTypesRepresentatives = new List<IUnit>();
+			var units = new List<Unit>();
+			var unitTypesRepresentatives = new List<Unit>();
 
 			foreach (var unitType in Enum.GetValues(typeof(UnitType)))
 			{
@@ -75,8 +75,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public IUnitForces CreateAttacker(IInputData inputData, Fleet fleet, IGameData gameData)
 		{
-			var units = new List<IUnit>();
-			var unitTypesRepresentatives = new List<IUnit>();
+			var units = new List<Unit>();
+			var unitTypesRepresentatives = new List<Unit>();
 
 			foreach (var fleetUnitType in fleet.FleetUnits)
 			{
@@ -98,7 +98,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return (int)inputPlayerData.GetType().GetProperty(unitTypeName).GetValue(inputPlayerData, null);
 		}
 
-		private void AddDomesToUnits(List<IUnit> units, List<IUnit> unitTypesRepresentatives, IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
+		private void AddDomesToUnits(List<Unit> units, List<Unit> unitTypesRepresentatives, IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
 		{
 			if (inputPlayerData.HasSmallShield)
 			{
