@@ -7,5 +7,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Interfaces
 	public interface IGameData
 	{
 		Dictionary<UnitType, UnitGameData> UnitsData { get; set; }
+		int[,] RapidFire { get; }
+
+		void LoadRapidFire();
 	}
 }

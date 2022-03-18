@@ -11,6 +11,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 	public class UnitForces : IUnitForces
 	{
 		private readonly IGameData gameData;
+		private readonly int[,] rapidFireTable;
 		private readonly Randomizer randomizer;
 
 		private List<IUnit> allUnits;
@@ -32,6 +33,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.UnitTypesRepresentatives = unitTypesRepresentatives;
 
 			this.randomizer = new Randomizer();
+
+			this.rapidFireTable = this.gameData.RapidFire;
 		}
 
 		public IUnitForces Copy()
@@ -101,7 +104,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			for (int i = 0; i < aliveAttackersUnitsCount; i++)
 			{
 				var attackerUnit = this.aliveUnits[i];
-				var unitFastGuns = this.gameData.UnitsData[attackerUnit.UnitType].FastGuns;
+				var attackerUnitTypeValue = (int)attackerUnit.UnitType;
 				IUnit defenderTargetedUnit;
 
 				do
@@ -109,16 +112,16 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit(aliveDefenderUnitAvailableIndexes);
 					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit.Damage);
 				} 
-				while (ShouldAttackAgain(unitFastGuns, this.randomizer, defenderTargetedUnit));
+				while (ShouldAttackAgain(this.rapidFireTable, attackerUnitTypeValue, this.randomizer, defenderTargetedUnit));
 			}
 		}
 
-		private static bool ShouldAttackAgain(Dictionary<UnitType, int> fastGuns, Randomizer randomizer, IUnit defenderTargetedUnit)
+		private static bool ShouldAttackAgain(int [,] rapidFireTable, int attackerUnitTypeValue, Randomizer randomizer, IUnit defenderTargetedUnit)
 		{
-			var tryGetValueSuccess = fastGuns.TryGetValue(defenderTargetedUnit.UnitType, out var fastGunsValue);
+			var rapidFire = rapidFireTable[attackerUnitTypeValue, (int)defenderTargetedUnit.UnitType];
 
-			return tryGetValueSuccess
-				? randomizer.RandomFromRange(0, fastGunsValue - 1) < (fastGunsValue - 1)
+			return rapidFire != 0
+				? randomizer.RandomFromRange(0, rapidFire - 1) < (rapidFire - 1)
 				: false;
 		}
 
