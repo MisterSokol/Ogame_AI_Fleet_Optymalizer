@@ -16,13 +16,13 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		Resources GetLostResources(bool includeAliveUnits = false);
 		Resources GetDebrisResources(bool includeAliveUnits = false);
 		long GetFleetResourcesCapacity();
-		void EndBattle();
 		void EndRound();
-		Unit GetRandomAliveUnit(int aliveUnitsAvailableIndexes);
+		(Unit, int) GetRandomAliveUnit(int aliveUnitsAvailableIndexes);
 		double TacticalPower();
 		Resources GetFlightCost(IInputData inputData, bool forceEveryFleetMaxSpeed = false);
 
 		IUnitForces Copy();
 		void PerformTacticalRetreat();
+		void MarkAsExplodedNextRound(int unitIndex);
 	}
 }

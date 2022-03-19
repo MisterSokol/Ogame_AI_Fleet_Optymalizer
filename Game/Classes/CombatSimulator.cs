@@ -76,9 +76,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				round++;
 			}
 
-			attackerFleet.EndBattle();
-			defenderUnits.EndBattle();
-
 			var winnerType = this.ChooseWinner(round, attackerFleet, defenderUnits);
 
 			return this.combatResultFactory.Create(

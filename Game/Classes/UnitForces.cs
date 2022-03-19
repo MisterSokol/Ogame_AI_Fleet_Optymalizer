@@ -14,11 +14,13 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		private readonly int[,] rapidFireTable;
 		private readonly Randomizer randomizer;
 
-		private List<Unit> allUnits;
-		private List<Unit> aliveUnits;
-		private List<Unit> explodedUnits;
+		private Unit[] allUnits;
+		private int[] aliveUnitsCurrentRoundIndexes;
+		private HashSet<int> aliveUnitsNextRoundIndexes;
+		private int[] explodedUnitIndexes;
+		private int explodedUnitIndexesNextIndex;
 
-		public int AliveUnitsCount => this.aliveUnits.Count;
+		public int AliveUnitsCount => this.aliveUnitsCurrentRoundIndexes.Length;
 		public int FleetSpeed { get; private set; }
 		public List<Unit> UnitTypesRepresentatives { get; }
 
@@ -27,14 +29,24 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.gameData = gameData;
 			this.FleetSpeed = this.GetFleetSpeed(unitTypesRepresentatives);
 
-			this.allUnits = units;
-			this.aliveUnits = this.allUnits;
-			this.explodedUnits = new List<Unit>();
+			this.allUnits = units.ToArray();
+
+			this.ResetArrays();
+
 			this.UnitTypesRepresentatives = unitTypesRepresentatives;
 
 			this.randomizer = new Randomizer();
 
 			this.rapidFireTable = this.gameData.RapidFire;
+		}
+
+		private void ResetArrays()
+		{
+			var unitsNumber = this.allUnits.Length;
+			this.aliveUnitsCurrentRoundIndexes = Enumerable.Range(0, unitsNumber).ToArray();
+			this.aliveUnitsNextRoundIndexes = new HashSet<int>(this.aliveUnitsCurrentRoundIndexes);
+			this.explodedUnitIndexes = new int[unitsNumber];
+			this.explodedUnitIndexesNextIndex = 0;
 		}
 
 		public IUnitForces Copy()
@@ -44,76 +56,112 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public Resources GetDebrisResources(bool includeAliveUnits = false)
 		{
-			var units = includeAliveUnits
-				? this.allUnits
-				: this.explodedUnits;
-
-			if (!units.Any())
+			if (includeAliveUnits)
 			{
-				return new Resources();
+				return this.allUnits
+					.Select(x => x.GetDebrisResources())
+					.Aggregate((x, y) => x + y);
 			}
 
-			return units
-				.Select(x => x.GetDebrisResources())
-				.Aggregate((x, y) => x + y);
+			var explodedUnitsLength = this.explodedUnitIndexes.Length;
+			var sum = new Resources();
+
+			for (int i = 0; i < explodedUnitsLength; i++)
+			{
+				sum += this.allUnits[this.explodedUnitIndexes[i]].GetDebrisResources();
+			}
+
+			return sum;
 		}
 
 		public long GetFleetResourcesCapacity()
 		{
-			return this.aliveUnits.Sum(x => x.GetUnitResourcesCapacity());
+			var aliveUnitsIndexes = this.aliveUnitsCurrentRoundIndexes.Length;
+			var sum = 0L;
+
+			for (int i = 0; i < aliveUnitsIndexes; i++)
+			{
+				sum += this.allUnits[this.aliveUnitsCurrentRoundIndexes[i]].GetUnitResourcesCapacity();
+			}
+
+			return sum;
 		}
 
 		public Resources GetLostResources(bool includeAliveUnits = false)
 		{
-			var units = includeAliveUnits
-				? this.allUnits
-				: this.explodedUnits;
-
-			if (!units.Any())
+			if (includeAliveUnits)
 			{
-				return new Resources();
+				return this.allUnits
+					.Select(x => x.GetDebrisResources())
+					.Aggregate((x, y) => x + y);
 			}
 
-			return units
-				.Select(x => x.GetUnitResourcesCost())
-				.Aggregate((x, y) => x + y);
+			var explodedUnitsLength = this.explodedUnitIndexes.Length;
+			var sum = new Resources();
+
+			for (int i = 0; i < explodedUnitsLength; i++)
+			{
+				sum += this.allUnits[this.explodedUnitIndexes[i]].GetUnitResourcesCost();
+			}
+
+			return sum;
 		}
 
 		public bool HasUnitsLeft()
 		{
-			return this.aliveUnits.Any();
+			return this.aliveUnitsCurrentRoundIndexes.Length > 0;
 		}
 
 		public void ResetToFullForces()
 		{
-			this.allUnits.ForEach(x => x.Reset());
-			this.aliveUnits = this.allUnits;
+			var unitsNumber = this.allUnits.Length;
+
+			this.ResetArrays();
+
+			for (var i = 0; i < unitsNumber; i++)
+			{
+				this.allUnits[i].Reset();
+			}
 		}
 
 		public void EndRound()
 		{
-			this.aliveUnits = this.allUnits.Where(x => x.IsAlive).ToList();
-			this.aliveUnits.ForEach(x => x.RestoreShield());
+			var aliveUnitsCount = this.aliveUnitsNextRoundIndexes.Count;
+			this.aliveUnitsCurrentRoundIndexes = new int[aliveUnitsCount];
+			var i = 0;
+
+			foreach (var unitIndex in this.aliveUnitsNextRoundIndexes)
+			{
+				this.aliveUnitsCurrentRoundIndexes[i++] = unitIndex;
+				this.allUnits[unitIndex].RestoreShield();
+			}
 		}
 
 		public void HitButDoNotUpdate(IUnitForces defenderUnit)
 		{
-			var aliveAttackersUnitsCount = this.aliveUnits.Count;
+			var aliveAttackersUnitsCount = this.aliveUnitsCurrentRoundIndexes.Length;
 			var aliveDefenderUnitAvailableIndexes = defenderUnit.AliveUnitsCount - 1;
 
 			for (int i = 0; i < aliveAttackersUnitsCount; i++)
 			{
-				var attackerUnit = this.aliveUnits[i];
+				var attackerUnit = this.allUnits[this.aliveUnitsCurrentRoundIndexes[i]];
 				var attackerUnitTypeValue = (int)attackerUnit.UnitType;
 				Unit defenderTargetedUnit;
+				int defenderUnitIndex;
 
 				do
 				{
-					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit(aliveDefenderUnitAvailableIndexes);
-					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit.Damage);
+					(defenderTargetedUnit, defenderUnitIndex) = defenderUnit.GetRandomAliveUnit(aliveDefenderUnitAvailableIndexes);
+					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit.Damage, defenderUnit, defenderUnitIndex);
 				} 
 				while (ShouldAttackAgain(this.rapidFireTable, attackerUnitTypeValue, this.randomizer, defenderTargetedUnit));
 			}
+		}
+
+		public void MarkAsExplodedNextRound(int unitIndex)
+		{
+			this.aliveUnitsNextRoundIndexes.Remove(unitIndex);
+			this.explodedUnitIndexes[this.explodedUnitIndexesNextIndex++] = unitIndex;
 		}
 
 		private static bool ShouldAttackAgain(int [,] rapidFireTable, int attackerUnitTypeValue, Randomizer randomizer, Unit defenderTargetedUnit)
@@ -125,14 +173,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				: false;
 		}
 
-		public void EndBattle()
+		public (Unit, int) GetRandomAliveUnit(int aliveUnitsAvailableIndexes)
 		{
-			this.explodedUnits = this.allUnits.Where(x => !x.IsAlive).ToList();
-		}
+			var randomIndex = this.aliveUnitsCurrentRoundIndexes[this.randomizer.RandomFromRange(0, aliveUnitsAvailableIndexes)];
 
-		public Unit GetRandomAliveUnit(int aliveUnitsAvailableIndexes)
-		{
-			return this.aliveUnits[this.randomizer.RandomFromRange(0, aliveUnitsAvailableIndexes)];
+			return (this.allUnits[randomIndex], randomIndex);
 		}
 
 		public double TacticalPower()
@@ -167,9 +212,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		{
 			this.allUnits = this.allUnits
 				.Where(x => !this.gameData.UnitsData[x.UnitType].IsFleet || !this.gameData.UnitsData[x.UnitType].CanDoTacticalRetreat)
-				.ToList();
+				.ToArray();
 
-			this.aliveUnits = this.allUnits;
+			this.ResetArrays();
 		}
 
 		private int GetFleetSpeed(List<Unit> unitTypesRepresentatives)

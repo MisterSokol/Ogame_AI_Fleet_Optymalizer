@@ -96,7 +96,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.ShieldValue = this.maxShieldValue;
 		}
 
-		public void TakeHit(Randomizer randomizer, int damage)
+		public void TakeHit(Randomizer randomizer, int damage, IUnitForces unitForces, int unitIndex)
 		{
 			if (!this.IsAlive || damage < this.minApplicableDamage)
 			{
@@ -121,6 +121,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			if (this.hp <= 0)
 			{
 				this.IsAlive = false;
+				unitForces.MarkAsExplodedNextRound(unitIndex);
 			}
 		}
 
