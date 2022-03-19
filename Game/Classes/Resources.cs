@@ -6,9 +6,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
 	public struct Resources
 	{
-		public int Metal { get; set; }
-		public int Crystal { get; set; }
-		public int Deuterium { get; set; }
+		public int Metal;
+		public int Crystal;
+		public int Deuterium;
 
 		public Resources(int metal, int crystal, int deuterium)
 		{
