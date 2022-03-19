@@ -43,8 +43,15 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		private void ResetArrays()
 		{
 			var unitsNumber = this.allUnits.Length;
-			this.aliveUnitsCurrentRoundIndexes = Enumerable.Range(0, unitsNumber).ToArray();
-			this.aliveUnitsNextRoundIndexes = new HashSet<int>(this.aliveUnitsCurrentRoundIndexes);
+			this.aliveUnitsCurrentRoundIndexes = new int[unitsNumber];
+			this.aliveUnitsNextRoundIndexes = new HashSet<int>(unitsNumber);
+
+			for (var i = 0; i < unitsNumber; i++)
+			{
+				this.aliveUnitsCurrentRoundIndexes[i] = i;
+				this.aliveUnitsNextRoundIndexes.Add(i);
+			}
+
 			this.explodedUnitIndexes = new int[unitsNumber];
 			this.explodedUnitIndexesNextIndex = 0;
 		}
