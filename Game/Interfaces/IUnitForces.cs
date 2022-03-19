@@ -17,7 +17,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces
 		Resources GetDebrisResources(bool includeAliveUnits = false);
 		long GetFleetResourcesCapacity();
 		void EndRound();
-		(Unit, int) GetRandomAliveUnit(int aliveUnitsAvailableIndexes);
+		Unit GetRandomAliveUnit(int aliveUnitsAvailableIndexes);
 		double TacticalPower();
 		Resources GetFlightCost(IInputData inputData, bool forceEveryFleetMaxSpeed = false);
 

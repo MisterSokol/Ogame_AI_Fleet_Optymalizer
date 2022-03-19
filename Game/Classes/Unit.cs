@@ -15,11 +15,14 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		private readonly int maxHP;
 		private readonly int maxShieldValue;
+		private readonly int maxShieldMinApplicableDamage;
 
 		public UnitType UnitType;
 		public Resources Debris;
 		public int ResourcesCapacity;
 		public Resources UnitResourcesCost;
+		public int Index;
+
 		public int HP 
 		{
 			get => hp;
@@ -62,6 +65,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.maxHP = maxHP;
 			this.HP = maxHP;
 			this.ShieldValue = maxShieldValue;
+			this.maxShieldMinApplicableDamage = this.minApplicableDamage;
 			this.maxShieldValue = maxShieldValue;
 			this.Damage = damage;
 			this.IsAlive = true;
@@ -87,16 +91,17 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public void Reset()
 		{
 			this.HP = this.maxHP;
-			this.ShieldValue = this.maxShieldValue;
+			this.RestoreShield();
 			this.IsAlive = true;
 		}
 
 		public void RestoreShield()
 		{
-			this.ShieldValue = this.maxShieldValue;
+			this.shieldValue = this.maxShieldValue;
+			this.minApplicableDamage = this.maxShieldMinApplicableDamage;
 		}
 
-		public void TakeHit(Randomizer randomizer, int damage, IUnitForces unitForces, int unitIndex)
+		public void TakeHit(Randomizer randomizer, int damage, IUnitForces unitForces)
 		{
 			if (!this.IsAlive || damage < this.minApplicableDamage)
 			{
@@ -121,7 +126,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			if (this.hp <= 0)
 			{
 				this.IsAlive = false;
-				unitForces.MarkAsExplodedNextRound(unitIndex);
+				unitForces.MarkAsExplodedNextRound(this.Index);
 			}
 		}
 
