@@ -133,13 +133,14 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public void EndRound()
 		{
-			var aliveUnitsCount = this.aliveUnitsNextRoundIndexes.Count;
+			var aliveUnitsIndexesArray = this.aliveUnitsNextRoundIndexes.ToArray();
+			var aliveUnitsCount = aliveUnitsIndexesArray.Length;
 			this.aliveUnitsCurrentRoundIndexes = new int[aliveUnitsCount];
-			var i = 0;
 
-			foreach (var unitIndex in this.aliveUnitsNextRoundIndexes)
+			for (var i = 0; i < aliveUnitsCount; i++)
 			{
-				this.aliveUnitsCurrentRoundIndexes[i++] = unitIndex;
+				var unitIndex = aliveUnitsIndexesArray[i];
+				this.aliveUnitsCurrentRoundIndexes[i] = unitIndex;
 				this.allUnits[unitIndex].RestoreShield();
 			}
 		}
