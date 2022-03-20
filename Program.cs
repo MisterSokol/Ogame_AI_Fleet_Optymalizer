@@ -52,8 +52,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp
 				DefenderWinFitnessMultiplier = 1,
 				ProfitResourcesFitnessMultiplier = 2,
 				FlightSpeedFitnessMultiplier = 1,
-				AttackerToDefenderMoreThan3FleetRatioPentaltyPercentage = 0,
-				AttackerToDefenderMoreThan5FleetRatioPentaltyPercentage = 0
 			};
 		}
 
