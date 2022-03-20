@@ -16,7 +16,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		private Unit[] allUnits;
 		private int[] aliveUnitsCurrentRoundIndexes;
-		private HashSet<int> aliveUnitsNextRoundIndexes;
+		private bool[] aliveUnitStatusesNextRound;
+		private int aliveUnitsNextRoundCount;
 		private int[] explodedUnitIndexes;
 		private int explodedUnitIndexesNextIndex;
 
@@ -31,6 +32,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			this.allUnits = units.ToArray();
 			var unitsCount = this.allUnits.Length;
+			this.aliveUnitStatusesNextRound = new bool[unitsCount];
 
 			for (var i = 0; i < unitsCount; i++)
 			{
@@ -50,16 +52,16 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		{
 			var unitsNumber = this.allUnits.Length;
 			this.aliveUnitsCurrentRoundIndexes = new int[unitsNumber];
-			this.aliveUnitsNextRoundIndexes = new HashSet<int>(unitsNumber);
 
 			for (var i = 0; i < unitsNumber; i++)
 			{
 				this.aliveUnitsCurrentRoundIndexes[i] = i;
-				this.aliveUnitsNextRoundIndexes.Add(i);
+				this.aliveUnitStatusesNextRound[i] = true;
 			}
 
 			this.explodedUnitIndexes = new int[unitsNumber];
 			this.explodedUnitIndexesNextIndex = 0;
+			this.aliveUnitsNextRoundCount = unitsNumber;
 		}
 
 		public IUnitForces Copy()
@@ -139,16 +141,22 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public void EndRound()
 		{
-			var aliveUnitsIndexesArray = this.aliveUnitsNextRoundIndexes.ToArray();
-			var aliveUnitsCount = aliveUnitsIndexesArray.Length;
-			this.aliveUnitsCurrentRoundIndexes = new int[aliveUnitsCount];
+			var aliveUnitsNextRound = new int[this.aliveUnitsNextRoundCount];
+			var aliveUnitsCurrentRoundCount = this.aliveUnitsCurrentRoundIndexes.Length;
 
-			for (var i = 0; i < aliveUnitsCount; i++)
+			var j = 0;
+			for (var i = 0; i < aliveUnitsCurrentRoundCount; i++)
 			{
-				var unitIndex = aliveUnitsIndexesArray[i];
-				this.aliveUnitsCurrentRoundIndexes[i] = unitIndex;
-				this.allUnits[unitIndex].RestoreShield();
+				var unitIndex = this.aliveUnitsCurrentRoundIndexes[i];
+
+				if (this.aliveUnitStatusesNextRound[unitIndex])
+				{
+					aliveUnitsNextRound[j++] = unitIndex;
+					this.allUnits[unitIndex].RestoreShield();
+				}
 			}
+
+			this.aliveUnitsCurrentRoundIndexes = aliveUnitsNextRound;
 		}
 
 		public void HitButDoNotUpdate(IUnitForces defenderUnit)
@@ -173,7 +181,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 		public void MarkAsExplodedNextRound(int unitIndex)
 		{
-			this.aliveUnitsNextRoundIndexes.Remove(unitIndex);
+			this.aliveUnitStatusesNextRound[unitIndex] = false;
+			this.aliveUnitsNextRoundCount--;
 			this.explodedUnitIndexes[this.explodedUnitIndexesNextIndex++] = unitIndex;
 		}
 
