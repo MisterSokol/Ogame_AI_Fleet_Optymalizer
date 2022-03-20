@@ -191,9 +191,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		{
 			var rapidFire = rapidFireTable[attackerUnitTypeValue, (int)defenderTargetedUnit.UnitType];
 
-			return rapidFire != 0
-				? randomizer.Next(rapidFire) < (rapidFire - 1)
-				: false;
+			return rapidFire != 0 && randomizer.Next(rapidFire) < (rapidFire - 1);
 		}
 
 		public Unit GetRandomAliveUnit(int aliveUnitsAvailableIndexes)
