@@ -1,6 +1,7 @@
 ﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Enums;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
+using SharpNeatLib.Maths;
 using System;
 using System.Runtime.CompilerServices;
 
@@ -86,7 +87,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.minApplicableDamage = this.maxShieldMinApplicableDamage;
 		}
 
-		public void TakeHit(Randomizer randomizer, int damage, IUnitForces unitForces)
+		public void TakeHit(FastRandom randomizer, int damage, IUnitForces unitForces)
 		{
 			if (!this.IsAlive || damage < this.minApplicableDamage)
 			{
@@ -103,7 +104,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				this.ShieldValue =  this.shieldValue - damage;
 			}
 
-			if (this.hp > 0 && this.maxHpPercentage <= 70 && randomizer.CheckIfHitTheChance(100 - this.maxHpPercentage))
+			if (this.hp > 0 && this.maxHpPercentage <= 70 && randomizer.Next0to100() < 100 - this.maxHpPercentage)
 			{
 				this.HP = 0;
 			}

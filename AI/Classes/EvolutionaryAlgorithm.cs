@@ -5,6 +5,7 @@ using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Enums;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
+using SharpNeatLib.Maths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		private readonly ICombatSimulator combatSimulator;
 		private readonly IUnitForcesFactory unitForcesFactory;
 		private readonly IDataIOHandler dataIOHandler;
-		private readonly Randomizer randomizer;
+		private readonly FastRandom randomizer;
 
 		private List<long> randomFitnessRollingTable;
 		private Fleet maxFleet;
@@ -28,7 +29,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		{
 			this.combatSimulator = new CombatSimulator();
 			this.unitForcesFactory = new UnitForcesFactory();
-			this.randomizer = new Randomizer();
+			this.randomizer = new FastRandom();
 			this.dataIOHandler = new DataIOHandler();
 		}
 
@@ -202,7 +203,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 			while (newGeneration.Count < configuration.GenerationSize)
 			{
-				if (this.randomizer.CheckIfHitTheChance(configuration.MutationChanceProbablityPercentage))
+				if (this.randomizer.Next0to100() < configuration.MutationChanceProbablityPercentage)
 				{
 					newGeneration.Add(this.PerformMutation(configuration, input, generation));
 				}
@@ -241,20 +242,20 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		private Individual PerformMutation(IConfigurationData configuration, IInputData input, List<Individual> generation)
 		{
 			var fleetToMutate = this.PickRandomIndividualBasedOnFitness(generation).Fleet.Copy();
-			var unitTypeToMutate = (UnitType)this.randomizer.RandomFromRange((int)UnitType.SmallCargo, (int)UnitType.Pathfinder);
+			var unitTypeToMutate = (UnitType)this.randomizer.Next((int)UnitType.SmallCargo, (int)UnitType.Pathfinder + 1);
 			var units = fleetToMutate.FleetUnits[unitTypeToMutate];
 
 			if (units == 0)
 			{
-				fleetToMutate.FleetUnits[unitTypeToMutate] = this.randomizer.GetRandomPercentageValueOfNumber(this.maxFleet.FleetUnits[unitTypeToMutate]);
+				fleetToMutate.FleetUnits[unitTypeToMutate] = GetRandomPercentageValueOfNumber(randomizer, this.maxFleet.FleetUnits[unitTypeToMutate]);
 			}
 			else
 			{
-				if (this.randomizer.CheckIfHitTheChance(configuration.ChanceOfMutationToZeroPercentage))
+				if (this.randomizer.Next0to100() < configuration.ChanceOfMutationToZeroPercentage)
 				{
 					fleetToMutate.FleetUnits[unitTypeToMutate] = 0;
 				}
-				else if (this.randomizer.CheckIfHitTheChance(configuration.ChanceOfMutationToMaxPercentage))
+				else if (this.randomizer.Next0to100() < configuration.ChanceOfMutationToMaxPercentage)
 				{
 					fleetToMutate.FleetUnits[unitTypeToMutate] = this.maxFleet.FleetUnits[unitTypeToMutate];
 				}
@@ -264,10 +265,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 					do
 					{
 						newUnitValue = fleetToMutate.FleetUnits[unitTypeToMutate];
-						var modificationPercentage = this.randomizer.RandomFromRange(configuration.MinMutationModificationPercentage, configuration.MaxMutationModificationPercentage);
+						var modificationPercentage = this.randomizer.Next(configuration.MinMutationModificationPercentage, configuration.MaxMutationModificationPercentage + 1);
 						var modificationValue = Math.Max(1, CalculationHelper.GetPercentageValue(units, modificationPercentage));
 
-						if (this.randomizer.RandomTrueFalse())
+						if (this.randomizer.NextBool())
 						{
 							newUnitValue += modificationValue;
 						}
@@ -293,7 +294,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 			foreach (var unitType in this.maxFleet.FleetUnits.Keys)
 			{
-				var parentToGetUnitFrom = this.randomizer.RandomTrueFalse() ? leftParentFleet : rightParentFleet;
+				var parentToGetUnitFrom = this.randomizer.NextBool() ? leftParentFleet : rightParentFleet;
 
 				childFleet.FleetUnits[unitType] = parentToGetUnitFrom.FleetUnits[unitType];
 			}
@@ -337,7 +338,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 				foreach (var unitType in this.maxFleet.FleetUnits.Keys)
 				{
-					randomFleet.FleetUnits[unitType] = this.randomizer.GetRandomPercentageValueOfNumber(this.maxFleet.FleetUnits[unitType]);
+					randomFleet.FleetUnits[unitType] = GetRandomPercentageValueOfNumber(randomizer, this.maxFleet.FleetUnits[unitType]);
 				}
 
 				randomGeneration.Add(new Individual(randomFleet, fitnessValue: 0));
@@ -348,7 +349,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 		private Individual PickRandomIndividualBasedOnFitness(List<Individual> generation)
 		{
-			var randomFitnessChance = this.randomizer.RandomFromRange(0, this.randomFitnessRollingTable.Last());
+			var randomFitnessChance = NextLong(randomizer, 0, this.randomFitnessRollingTable.Last());
 
 			// Modified binary search to search for matching range
 
@@ -370,6 +371,20 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			}
 
 			return generation[leftIndex];
+		}
+
+		private static long NextLong(FastRandom random, long min, long max)
+		{
+			byte[] buf = new byte[8];
+			random.NextBytes(buf);
+			long longRand = BitConverter.ToInt64(buf, 0);
+
+			return Math.Abs(longRand % (max + 1 - min)) + min;
+		}
+
+		private static int GetRandomPercentageValueOfNumber(FastRandom random, int number)
+		{
+			return (int)Math.Round((double)random.Next0to100() * number / 100);
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Enums;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
 using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
+using SharpNeatLib.Maths;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 	{
 		private readonly IGameData gameData;
 		private readonly int[,] rapidFireTable;
-		private readonly Randomizer randomizer;
+		private readonly FastRandom randomizer;
 
 		private Unit[] allUnits;
 		private int[] aliveUnitsCurrentRoundIndexes;
@@ -43,7 +44,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			this.UnitTypesRepresentatives = unitTypesRepresentatives;
 
-			this.randomizer = new Randomizer();
+			this.randomizer = new FastRandom();
 
 			this.rapidFireTable = this.gameData.RapidFire;
 		}
@@ -186,18 +187,18 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.explodedUnitIndexes[this.explodedUnitIndexesNextIndex++] = unitIndex;
 		}
 
-		private static bool ShouldAttackAgain(int [,] rapidFireTable, int attackerUnitTypeValue, Randomizer randomizer, Unit defenderTargetedUnit)
+		private static bool ShouldAttackAgain(int [,] rapidFireTable, int attackerUnitTypeValue, FastRandom randomizer, Unit defenderTargetedUnit)
 		{
 			var rapidFire = rapidFireTable[attackerUnitTypeValue, (int)defenderTargetedUnit.UnitType];
 
 			return rapidFire != 0
-				? randomizer.RandomFromRange(0, rapidFire - 1) < (rapidFire - 1)
+				? randomizer.Next(rapidFire) < (rapidFire - 1)
 				: false;
 		}
 
 		public Unit GetRandomAliveUnit(int aliveUnitsAvailableIndexes)
 		{
-			var randomIndex = this.aliveUnitsCurrentRoundIndexes[this.randomizer.RandomFromRange(0, aliveUnitsAvailableIndexes)];
+			var randomIndex = this.aliveUnitsCurrentRoundIndexes[this.randomizer.Next(aliveUnitsAvailableIndexes + 1)];
 
 			return this.allUnits[randomIndex];
 		}
