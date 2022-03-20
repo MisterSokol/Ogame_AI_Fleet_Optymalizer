@@ -96,7 +96,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			for (int i = 0; i < aliveUnitsIndexes; i++)
 			{
-				sum += this.allUnits[this.aliveUnitsCurrentRoundIndexes[i]].GetUnitResourcesCapacity();
+				sum += this.allUnits[this.aliveUnitsCurrentRoundIndexes[i]].ResourcesCapacity;
 			}
 
 			return sum;

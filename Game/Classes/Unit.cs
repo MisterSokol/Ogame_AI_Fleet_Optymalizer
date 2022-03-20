@@ -73,11 +73,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.FuelConsumption = fuelConsumption;
 		}
 
-		public long GetUnitResourcesCapacity()
-		{
-			return this.ResourcesCapacity;
-		}
-
 		public Resources GetUnitResourcesCost()
 		{
 			return this.UnitResourcesCost;
