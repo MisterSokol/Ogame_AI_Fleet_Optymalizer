@@ -74,7 +74,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			if (includeAliveUnits)
 			{
 				return this.allUnits
-					.Select(x => x.GetDebrisResources())
+					.Select(x => x.Debris)
 					.Aggregate((x, y) => x + y);
 			}
 
@@ -83,7 +83,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			for (int i = 0; i < explodedUnitsLength; i++)
 			{
-				sum += this.allUnits[this.explodedUnitIndexes[i]].GetDebrisResources();
+				sum += this.allUnits[this.explodedUnitIndexes[i]].Debris;
 			}
 
 			return sum;
@@ -107,7 +107,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			if (includeAliveUnits)
 			{
 				return this.allUnits
-					.Select(x => x.GetDebrisResources())
+					.Select(x => x.Debris)
 					.Aggregate((x, y) => x + y);
 			}
 
