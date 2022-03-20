@@ -116,7 +116,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			for (int i = 0; i < explodedUnitsLength; i++)
 			{
-				sum += this.allUnits[this.explodedUnitIndexes[i]].GetUnitResourcesCost();
+				sum += this.allUnits[this.explodedUnitIndexes[i]].UnitResourcesCost;
 			}
 
 			return sum;
@@ -208,8 +208,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				.Where(x => gameData.UnitsData[x.UnitType].IsFleet)
 				.ToList();
 
-			var fleetPoints = fleetUnits.Where(x => !gameData.UnitsData[x.UnitType].IsCivilUnit).Sum(x => x.GetUnitResourcesCost().GetTotal());
-			var civilPoints = fleetUnits.Where(x => gameData.UnitsData[x.UnitType].IsCivilUnit).Sum(x => x.GetUnitResourcesCost().GetTotal());
+			var fleetPoints = fleetUnits.Where(x => !gameData.UnitsData[x.UnitType].IsCivilUnit).Sum(x => x.UnitResourcesCost.GetTotal());
+			var civilPoints = fleetUnits.Where(x => gameData.UnitsData[x.UnitType].IsCivilUnit).Sum(x => x.UnitResourcesCost.GetTotal());
 
 			return (double)fleetPoints + (double)civilPoints / 4;
 		}

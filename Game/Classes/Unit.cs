@@ -73,11 +73,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.FuelConsumption = fuelConsumption;
 		}
 
-		public Resources GetUnitResourcesCost()
-		{
-			return this.UnitResourcesCost;
-		}
-
 		public void Reset()
 		{
 			this.HP = this.maxHP;
