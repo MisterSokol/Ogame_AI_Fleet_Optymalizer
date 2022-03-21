@@ -33,7 +33,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			this.allUnits = units.ToArray();
 			var unitsCount = this.allUnits.Length;
-			this.aliveUnitStatusesNextRound = new bool[unitsCount];
 
 			for (var i = 0; i < unitsCount; i++)
 			{
@@ -53,6 +52,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		{
 			var unitsNumber = this.allUnits.Length;
 			this.aliveUnitsCurrentRoundIndexes = new int[unitsNumber];
+			this.aliveUnitStatusesNextRound = new bool[unitsNumber];
 
 			for (var i = 0; i < unitsNumber; i++)
 			{
@@ -234,6 +234,13 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.allUnits = this.allUnits
 				.Where(x => !this.gameData.UnitsData[x.UnitType].IsFleet || !this.gameData.UnitsData[x.UnitType].CanDoTacticalRetreat)
 				.ToArray();
+
+			var unitsCount = this.allUnits.Length;
+
+			for (var i = 0; i < unitsCount; i++)
+			{
+				this.allUnits[i].Index = i;
+			}
 
 			this.ResetArrays();
 		}
