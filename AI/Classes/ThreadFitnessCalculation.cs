@@ -20,8 +20,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		private readonly IUnitForces attackerMaxForces;
 		private readonly int winMinFitnessValue;
 		private readonly int winMaxFitnessValue;
-		private readonly int profitMinFitnessValue;
-		private readonly int profitMaxFitnessValue;
+		private readonly long profitMinFitnessValue;
+		private readonly long profitMaxFitnessValue;
 		private readonly int fleetSpeedMinFitnessValue;
 		private readonly int fleetSpeedMaxFitnessValue;
 		//private readonly int fuelMinFitnessValue;
@@ -171,7 +171,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			return this.NormalizeValue(winValue, this.winMinFitnessValue, this.winMaxFitnessValue);
 		}
 
-		private int NormalizeValue(int value, int minValue, int maxValue)
+		private int NormalizeValue(long value, long minValue, long maxValue)
 		{
 			const int normalizedDataMin = 0;
 			const int normalizedDataMax = 1000000;
@@ -196,7 +196,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			return 100 * multipliers.Max();
 		}
 
-		private int GetProfitMinFitnessValue()
+		private long GetProfitMinFitnessValue()
 		{
 			var lostResources = this.attackerMaxForces.GetDebrisResources(true) 
 				- this.attackerMaxForces.GetLostResources(true)
@@ -205,7 +205,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			return lostResources.GetTotalWorth(this.configuration);
 		}
 
-		private int GetProfitMaxFitnessValue()
+		private long GetProfitMaxFitnessValue()
 		{
 			var availableResources = new Resources()
 			{

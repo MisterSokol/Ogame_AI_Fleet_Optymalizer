@@ -6,11 +6,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
 	public struct Resources
 	{
-		public int Metal;
-		public int Crystal;
-		public int Deuterium;
+		public long Metal;
+		public long Crystal;
+		public long Deuterium;
 
-		public Resources(int metal, int crystal, int deuterium)
+		public Resources(long metal, long crystal, long deuterium)
 		{
 			this.Metal = metal;
 			this.Crystal = crystal;
@@ -37,7 +37,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			};
 		}
 
-		public static Resources operator /(Resources a, int denominator)
+		public static Resources operator /(Resources a, long denominator)
 		{
 			return new Resources
 			{
@@ -61,18 +61,18 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		{
 			return new Resources()
 			{
-				Metal = CalculationHelper.GetPercentageValue(this.Metal, percentage),
-				Crystal = CalculationHelper.GetPercentageValue(this.Crystal, percentage),
-				Deuterium = CalculationHelper.GetPercentageValue(this.Deuterium, percentage),
+				Metal = CalculationHelper.GetLongPercentageValue(this.Metal, percentage),
+				Crystal = CalculationHelper.GetLongPercentageValue(this.Crystal, percentage),
+				Deuterium = CalculationHelper.GetLongPercentageValue(this.Deuterium, percentage),
 			};
 		}
 
-		public int GetTotal()
+		public long GetTotal()
 		{
 			return this.Metal + this.Crystal + this.Deuterium;
 		}
 
-		public int GetTotalWorth(IConfigurationData configuration)
+		public long GetTotalWorth(IConfigurationData configuration)
 		{
 			return this.Metal + this.Crystal * configuration.CrystalPriceMultiplier + this.Deuterium * configuration.DeuteriumPriceMultiplier;
 		}
@@ -86,9 +86,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			var resourcesTaken = new Resources();
 
-			for (int i = 3; i > 0; i--)
+			for (long i = 3; i > 0; i--)
 			{
-				var amountToFairDistributePerResources = (int)Math.Round((double)(attackerResourcesCapacity - resourcesTaken.GetTotal()) / i);
+				var amountToFairDistributePerResources = (long)Math.Round((double)(attackerResourcesCapacity - resourcesTaken.GetTotal()) / i);
 
 				resourcesTaken.Metal = Math.Min(this.Metal, resourcesTaken.Metal  + amountToFairDistributePerResources);
 				resourcesTaken.Crystal = Math.Min(this.Crystal, resourcesTaken.Crystal + amountToFairDistributePerResources);
