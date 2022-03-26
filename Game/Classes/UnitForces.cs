@@ -168,13 +168,17 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				var attackerUnit = this.allUnits[this.aliveUnitsCurrentRoundIndexes[i]];
 				var attackerUnitTypeValue = (int)attackerUnit.UnitType;
 				Unit defenderTargetedUnit;
+				bool shouldAttackAgain;
 
 				do
 				{
 					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit(aliveDefenderUnitAvailableIndexes);
 					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit.Damage, defenderUnit);
+
+					var rapidFire = rapidFireTable[attackerUnitTypeValue, (int)defenderTargetedUnit.UnitType];
+					shouldAttackAgain = rapidFire != 0 && randomizer.Next(rapidFire) < (rapidFire - 1);
 				} 
-				while (ShouldAttackAgain(this.rapidFireTable, attackerUnitTypeValue, this.randomizer, defenderTargetedUnit));
+				while (shouldAttackAgain);
 			}
 		}
 
@@ -183,13 +187,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.aliveUnitStatusesNextRound[unitIndex] = false;
 			this.aliveUnitsNextRoundCount--;
 			this.explodedUnitIndexes[this.explodedUnitIndexesNextIndex++] = unitIndex;
-		}
-
-		private static bool ShouldAttackAgain(int [,] rapidFireTable, int attackerUnitTypeValue, FastRandom randomizer, Unit defenderTargetedUnit)
-		{
-			var rapidFire = rapidFireTable[attackerUnitTypeValue, (int)defenderTargetedUnit.UnitType];
-
-			return rapidFire != 0 && randomizer.Next(rapidFire) < (rapidFire - 1);
 		}
 
 		public Unit GetRandomAliveUnit(int aliveUnitsAvailableIndexes)
