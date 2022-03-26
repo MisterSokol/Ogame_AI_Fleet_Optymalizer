@@ -134,7 +134,14 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 			for (var i = 0; i < unitsNumber; i++)
 			{
-				this.allUnits[i].Reset();
+				// Reset unit
+				var unit = this.allUnits[i];
+				this.allUnits[i].HP = unit.maxHP;
+				this.allUnits[i].IsAlive = true;
+
+				// RestoreShield
+				this.allUnits[i].shieldValue = unit.maxShieldValue;
+				this.allUnits[i].minApplicableDamage = unit.maxShieldMinApplicableDamage;
 			}
 		}
 
@@ -151,7 +158,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				if (this.aliveUnitStatusesNextRound[unitIndex])
 				{
 					aliveUnitsNextRound[j++] = unitIndex;
-					this.allUnits[unitIndex].RestoreShield();
+					// RestoreShield
+					var unit = this.allUnits[unitIndex];
+					this.allUnits[unitIndex].shieldValue = unit.maxShieldValue;
+					this.allUnits[unitIndex].minApplicableDamage = unit.maxShieldMinApplicableDamage;
 				}
 			}
 

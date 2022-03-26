@@ -14,9 +14,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public int minApplicableDamage;
 		public int maxHpPercentage;
 
-		private readonly int maxHP;
-		private readonly int maxShieldValue;
-		private readonly int maxShieldMinApplicableDamage;
+		public readonly int maxHP;
+		public readonly int maxShieldValue;
+		public readonly int maxShieldMinApplicableDamage;
 
 		public UnitType UnitType;
 		public Resources Debris;
@@ -72,19 +72,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.IsAlive = true;
 			this.Speed = speed;
 			this.FuelConsumption = fuelConsumption;
-		}
-
-		public void Reset()
-		{
-			this.HP = this.maxHP;
-			this.RestoreShield();
-			this.IsAlive = true;
-		}
-
-		public void RestoreShield()
-		{
-			this.shieldValue = this.maxShieldValue;
-			this.minApplicableDamage = this.maxShieldMinApplicableDamage;
 		}
 
 		public object Clone()
