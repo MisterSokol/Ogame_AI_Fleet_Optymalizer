@@ -24,15 +24,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public Resources UnitResourcesCost;
 		public int Index;
 
-		public int HP 
-		{
-			get => hp;
-			set
-			{
-				this.hp = value;
-				this.maxHpPercentage = (int)((double)this.hp / this.maxHP * 100);
-			}
-		}
 		public int ShieldValue 
 		{
 			get => this.shieldValue;
@@ -64,7 +55,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.ResourcesCapacity = resourcesCapacity;
 			this.UnitResourcesCost = unitResourcesCost;
 			this.maxHP = maxHP;
-			this.HP = maxHP;
+
+			this.hp = maxHP;
+			this.maxHpPercentage = 100;
+
 			this.ShieldValue = maxShieldValue;
 			this.maxShieldMinApplicableDamage = this.minApplicableDamage;
 			this.maxShieldValue = maxShieldValue;

@@ -136,7 +136,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			{
 				// Reset unit
 				var unit = this.allUnits[i];
-				this.allUnits[i].HP = unit.maxHP;
+				this.allUnits[i].hp = unit.maxHP;
+				this.allUnits[i].maxHpPercentage = 100;
+
 				this.allUnits[i].IsAlive = true;
 
 				// RestoreShield
@@ -188,7 +190,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 					{
 						if (attackerUnit.Damage > defenderTargetedUnit.shieldValue)
 						{
-							defenderTargetedUnit.HP = defenderTargetedUnit.hp - (attackerUnit.Damage - defenderTargetedUnit.shieldValue);
+							defenderTargetedUnit.hp -= (attackerUnit.Damage - defenderTargetedUnit.shieldValue);
+							defenderTargetedUnit.maxHpPercentage = (int)((double)defenderTargetedUnit.hp / defenderTargetedUnit.maxHP * 100);
 							defenderTargetedUnit.ShieldValue = 0;
 						}
 						else
@@ -198,7 +201,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 						if (defenderTargetedUnit.hp > 0 && defenderTargetedUnit.maxHpPercentage <= 70 && randomizer.Next0to100() < (100 - defenderTargetedUnit.maxHpPercentage))
 						{
-							defenderTargetedUnit.HP = 0;
+							defenderTargetedUnit.hp = 0;
+							defenderTargetedUnit.maxHpPercentage = 0;
 						}
 
 						if (defenderTargetedUnit.hp <= 0)
