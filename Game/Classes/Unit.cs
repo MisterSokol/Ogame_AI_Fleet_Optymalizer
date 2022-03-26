@@ -30,7 +30,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			private set
 			{
 				this.hp = value;
-				this.maxHpPercentage = this.hp / this.maxHP * 100;
+				this.maxHpPercentage = (int)((double)this.hp / this.maxHP * 100);
 			}
 		}
 		public int ShieldValue 
@@ -39,7 +39,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			private set
 			{
 				this.shieldValue = value;
-				this.minApplicableDamage = this.shieldValue / 100;
+				this.minApplicableDamage = (int)((double)this.shieldValue / 100);
 			}
 		}
 		public int Damage;
@@ -104,7 +104,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				this.ShieldValue =  this.shieldValue - damage;
 			}
 
-			if (this.hp > 0 && this.maxHpPercentage <= 70 && randomizer.Next0to100() < 100 - this.maxHpPercentage)
+			if (this.hp > 0 && this.maxHpPercentage <= 70 && randomizer.Next0to100() < (100 - this.maxHpPercentage))
 			{
 				this.HP = 0;
 			}

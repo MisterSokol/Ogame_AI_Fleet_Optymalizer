@@ -79,10 +79,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 					.Aggregate((x, y) => x + y);
 			}
 
-			var explodedUnitsLength = this.explodedUnitIndexes.Length;
 			var sum = new Resources();
 
-			for (int i = 0; i < explodedUnitsLength; i++)
+			for (int i = 0; i < this.explodedUnitIndexesNextIndex; i++)
 			{
 				sum += this.allUnits[this.explodedUnitIndexes[i]].Debris;
 			}
@@ -112,10 +111,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 					.Aggregate((x, y) => x + y);
 			}
 
-			var explodedUnitsLength = this.explodedUnitIndexes.Length;
 			var sum = new Resources();
 
-			for (int i = 0; i < explodedUnitsLength; i++)
+			for (int i = 0; i < this.explodedUnitIndexesNextIndex; i++)
 			{
 				sum += this.allUnits[this.explodedUnitIndexes[i]].UnitResourcesCost;
 			}
