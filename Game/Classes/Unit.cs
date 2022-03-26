@@ -9,6 +9,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
 	public class Unit : ICloneable
 	{
+		private int hp;
+		private int shieldValue;
+		private int minApplicableDamage;
+		private int maxHpPercentage;
+
 		private readonly int maxHP;
 		private readonly int maxShieldValue;
 		private readonly int maxShieldMinApplicableDamage;
@@ -18,15 +23,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public int ResourcesCapacity;
 		public Resources UnitResourcesCost;
 		public int Index;
-		public int MinApplicableDamage;
-		public int hp;
-		public int shieldValue;
-		public int maxHpPercentage;
 
 		public int HP 
 		{
 			get => hp;
-			set
+			private set
 			{
 				this.hp = value;
 				this.maxHpPercentage = (int)((double)this.hp / this.maxHP * 100);
@@ -35,10 +36,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public int ShieldValue 
 		{
 			get => this.shieldValue;
-			set
+			private set
 			{
 				this.shieldValue = value;
-				this.MinApplicableDamage = (int)((double)this.shieldValue / 100);
+				this.minApplicableDamage = (int)((double)this.shieldValue / 100);
 			}
 		}
 		public int Damage;
@@ -65,7 +66,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.maxHP = maxHP;
 			this.HP = maxHP;
 			this.ShieldValue = maxShieldValue;
-			this.maxShieldMinApplicableDamage = this.MinApplicableDamage;
+			this.maxShieldMinApplicableDamage = this.minApplicableDamage;
 			this.maxShieldValue = maxShieldValue;
 			this.Damage = damage;
 			this.IsAlive = true;
@@ -83,7 +84,36 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public void RestoreShield()
 		{
 			this.shieldValue = this.maxShieldValue;
-			this.MinApplicableDamage = this.maxShieldMinApplicableDamage;
+			this.minApplicableDamage = this.maxShieldMinApplicableDamage;
+		}
+
+		public void TakeHit(FastRandom randomizer, int damage, IUnitForces unitForces)
+		{
+			if (!this.IsAlive || damage < this.minApplicableDamage)
+			{
+				return;
+			}
+
+			if (damage > this.shieldValue)
+			{
+				this.HP = this.hp - (damage - this.shieldValue);
+				this.ShieldValue = 0;
+			}
+			else
+			{
+				this.ShieldValue =  this.shieldValue - damage;
+			}
+
+			if (this.hp > 0 && this.maxHpPercentage <= 70 && randomizer.Next0to100() < (100 - this.maxHpPercentage))
+			{
+				this.HP = 0;
+			}
+
+			if (this.hp <= 0)
+			{
+				this.IsAlive = false;
+				unitForces.MarkAsExplodedNextRound(this.Index);
+			}
 		}
 
 		public object Clone()

@@ -158,10 +158,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.aliveUnitsCurrentRoundIndexes = aliveUnitsNextRound;
 		}
 
-		public void HitButDoNotUpdate(IUnitForces defenderUnits)
+		public void HitButDoNotUpdate(IUnitForces defenderUnit)
 		{
 			var aliveAttackersUnitsCount = this.aliveUnitsCurrentRoundIndexes.Length;
-			var aliveDefenderUnitAvailableIndexes = defenderUnits.AliveUnitsCount - 1;
+			var aliveDefenderUnitAvailableIndexes = defenderUnit.AliveUnitsCount - 1;
 
 			for (int i = 0; i < aliveAttackersUnitsCount; i++)
 			{
@@ -172,39 +172,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 				do
 				{
-					defenderTargetedUnit = defenderUnits.GetRandomAliveUnit(aliveDefenderUnitAvailableIndexes);
-					// Defender Take Hit
-					var damage = attackerUnit.Damage;
-					if (defenderTargetedUnit.IsAlive && damage > defenderTargetedUnit.MinApplicableDamage)
-					{
-						var shieldValue = defenderTargetedUnit.shieldValue;
+					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit(aliveDefenderUnitAvailableIndexes);
+					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit.Damage, defenderUnit);
 
-						if (damage > shieldValue)
-						{
-							defenderTargetedUnit.HP = defenderTargetedUnit.hp - (damage - shieldValue);
-							defenderTargetedUnit.ShieldValue = 0;
-						}
-						else
-						{
-							defenderTargetedUnit.ShieldValue = shieldValue - damage;
-						}
-
-						var hp = defenderTargetedUnit.hp;
-
-						if (hp > 0 && defenderTargetedUnit.maxHpPercentage <= 70 && randomizer.Next0to100() < (100 - defenderTargetedUnit.maxHpPercentage))
-						{
-							defenderTargetedUnit.HP = 0;
-						}
-
-						if (hp <= 0)
-						{
-							defenderTargetedUnit.IsAlive = false;
-							defenderUnits.MarkAsExplodedNextRound(defenderTargetedUnit.Index);
-						}
-					}
-
-					//defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit.Damage, defenderUnits);
-					// ShouldAttackAgain
 					var rapidFire = rapidFireTable[attackerUnitTypeValue, (int)defenderTargetedUnit.UnitType];
 					shouldAttackAgain = rapidFire != 0 && randomizer.Next(rapidFire) < (rapidFire - 1);
 				} 
