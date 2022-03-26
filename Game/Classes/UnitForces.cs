@@ -192,11 +192,14 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 						{
 							defenderTargetedUnit.hp -= (attackerUnit.Damage - defenderTargetedUnit.shieldValue);
 							defenderTargetedUnit.maxHpPercentage = (int)((double)defenderTargetedUnit.hp / defenderTargetedUnit.maxHP * 100);
-							defenderTargetedUnit.ShieldValue = 0;
+
+							defenderTargetedUnit.shieldValue = 0;
+							defenderTargetedUnit.minApplicableDamage = 0;
 						}
 						else
 						{
-							defenderTargetedUnit.ShieldValue = defenderTargetedUnit.shieldValue - attackerUnit.Damage;
+							defenderTargetedUnit.shieldValue -= attackerUnit.Damage;
+							defenderTargetedUnit.minApplicableDamage = (int)((double)defenderTargetedUnit.shieldValue / 100);
 						}
 
 						if (defenderTargetedUnit.hp > 0 && defenderTargetedUnit.maxHpPercentage <= 70 && randomizer.Next0to100() < (100 - defenderTargetedUnit.maxHpPercentage))

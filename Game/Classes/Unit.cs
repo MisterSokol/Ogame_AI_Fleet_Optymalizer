@@ -1,9 +1,5 @@
 ﻿using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Enums;
-using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers;
-using OGame_FleetOptymalizer_AI_ConsoleApp.Game.Interfaces;
-using SharpNeatLib.Maths;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
@@ -24,15 +20,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		public Resources UnitResourcesCost;
 		public int Index;
 
-		public int ShieldValue 
-		{
-			get => this.shieldValue;
-			set
-			{
-				this.shieldValue = value;
-				this.minApplicableDamage = (int)((double)this.shieldValue / 100);
-			}
-		}
 		public int Damage;
 		public bool IsAlive;
 		public int Speed;
@@ -59,7 +46,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.hp = maxHP;
 			this.maxHpPercentage = 100;
 
-			this.ShieldValue = maxShieldValue;
+			this.shieldValue = maxShieldValue;
+			this.minApplicableDamage = (int)((double)this.shieldValue / 100);
+
 			this.maxShieldMinApplicableDamage = this.minApplicableDamage;
 			this.maxShieldValue = maxShieldValue;
 			this.Damage = damage;
