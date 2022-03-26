@@ -72,7 +72,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 
 
-		private Individual CalculateFitnessValuesAndGetBestIndividual(IConfigurationData configuration, IInputData input, IGameData gameData, List<Individual> generation, IUnitForces defenderUnitForces)
+		private Individual CalculateFitnessValuesAndGetBestIndividual(IConfigurationData configuration, IInputData input, IGameData gameData, List<Individual> generation, UnitForces defenderUnitForces)
 		{
 			object locker = new object();
 			var nextIndividualIndex = 0;
@@ -126,36 +126,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			//}
 
 			//return bestIndividual;
-		}
-
-		private int GetFitnessValue(IConfigurationData configuration, ISimulationResult simulationResult)
-		{
-			var total = 0;
-
-			total += this.GetWinFitnessValue(configuration, simulationResult);
-			total += this.GetProfitFitnessValue(configuration, simulationResult);
-			total += this.GetFleetSpeedFitnessValue(configuration, simulationResult);
-
-			return total;
-		}
-
-		private int GetFleetSpeedFitnessValue(IConfigurationData configuration, ISimulationResult simulationResult)
-		{
-			return simulationResult.AttackerFlightSpeed * configuration.FlightSpeedFitnessMultiplier;
-		}
-
-		private int GetProfitFitnessValue(IConfigurationData configuration, ISimulationResult simulationResult)
-		{
-			var profitResources = simulationResult.AttackerAverageProfitResources - simulationResult.FuelConsumption;
-
-			return profitResources.GetTotalWorth(configuration) * configuration.ProfitResourcesFitnessMultiplier;
-		}
-
-		private int GetWinFitnessValue(IConfigurationData configuration, ISimulationResult simulationResult)
-		{
-			return simulationResult.AttackerWinningChancePercentage * configuration.AttackerWinFitnessMultiplier
-				+ simulationResult.DrawChancePercentage * configuration.DrawFitnessMultiplier
-				+ simulationResult.DefenderWinningChancePercentage * configuration.DefenderWinFitnessMultiplier;
 		}
 
 		private Fleet GetMaxFleet(IInputData input)

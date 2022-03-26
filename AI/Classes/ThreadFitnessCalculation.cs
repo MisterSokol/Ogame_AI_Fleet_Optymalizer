@@ -17,7 +17,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		private readonly IUnitForcesFactory unitForcesFactory;
 		private readonly ICombatSimulator combatSimulator;
 
-		private readonly IUnitForces attackerMaxForces;
+		private readonly UnitForces attackerMaxForces;
 		private readonly int winMinFitnessValue;
 		private readonly int winMaxFitnessValue;
 		private readonly long profitMinFitnessValue;
@@ -28,7 +28,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		//private readonly int fuelMaxFitnessValue;
 
 		private List<Individual> generation;
-		private IUnitForces defenderUnitForces;
+		private UnitForces defenderUnitForces;
 		private object locker;
 		private int nextIndividualIndex;
 
@@ -39,7 +39,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			IUnitForcesFactory unitForcesFactory,
 			ICombatSimulator combatSimulator,
 			List<Individual> generation,
-			IUnitForces defenderUnitForces,
+			UnitForces defenderUnitForces,
 			object locker,
 			ref int nextIndividualIndex
 			)
@@ -121,7 +121,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			individual.SimulationResult = simulationResult;
 		}
 
-		private bool CanDoTacticalRetreat(double attackerFleetToDefenderRatio, IUnitForces attackerFleet, IUnitForces defenderUnits)
+		private bool CanDoTacticalRetreat(double attackerFleetToDefenderRatio, UnitForces attackerFleet, UnitForces defenderUnits)
 		{
 			var retreatRatio = this.configuration.TacticalRetreatAt3Ratio
 				? 3
@@ -132,7 +132,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			return attackerFleetToDefenderRatio >= retreatRatio;
 		}
 
-		private double GetAttackerFleetToDefenderRatio(IUnitForces attackerFleet, IUnitForces defenderUnits)
+		private double GetAttackerFleetToDefenderRatio(UnitForces attackerFleet, UnitForces defenderUnits)
 		{
 			return attackerFleet.TacticalPower() / defenderUnits.TacticalPower();
 		}

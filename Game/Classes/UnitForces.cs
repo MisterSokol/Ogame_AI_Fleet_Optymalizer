@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 {
-	public class UnitForces : IUnitForces
+	public class UnitForces
 	{
 		private readonly IGameData gameData;
 		private readonly int[,] rapidFireTable;
@@ -65,7 +65,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.aliveUnitsNextRoundCount = unitsNumber;
 		}
 
-		public IUnitForces Copy()
+		public UnitForces Copy()
 		{
 			return new UnitForces(this.gameData, this.allUnits.Select(x => (Unit)x.Clone()).ToList(), this.UnitTypesRepresentatives.Select(x => (Unit)x.Clone()).ToList());
 		}
@@ -170,21 +170,24 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.aliveUnitsCurrentRoundIndexes = aliveUnitsNextRound;
 		}
 
-		public void HitButDoNotUpdate(IUnitForces defenderUnit)
+		public void TakeHitButDoNotUpdate(UnitForces attacker)
 		{
-			var aliveAttackersUnitsCount = this.aliveUnitsCurrentRoundIndexes.Length;
-			var aliveDefenderUnitAvailableIndexes = defenderUnit.AliveUnitsCount - 1;
+			var aliveAttackersUnitsCount = attacker.aliveUnitsCurrentRoundIndexes.Length;
+			var defenderAliveUnitsCurrentRoundCount = this.aliveUnitsCurrentRoundIndexes.Length - 1;
 
 			for (int i = 0; i < aliveAttackersUnitsCount; i++)
 			{
-				var attackerUnit = this.allUnits[this.aliveUnitsCurrentRoundIndexes[i]];
+				var attackerUnit = attacker.allUnits[attacker.aliveUnitsCurrentRoundIndexes[i]];
 				var attackerUnitTypeValue = (int)attackerUnit.UnitType;
 				Unit defenderTargetedUnit;
 				bool shouldAttackAgain;
 
 				do
 				{
-					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit(aliveDefenderUnitAvailableIndexes);
+					//GetRandomAliveUnit 
+					var randomIndex = this.aliveUnitsCurrentRoundIndexes[this.randomizer.Next(defenderAliveUnitsCurrentRoundCount + 1)];
+					defenderTargetedUnit = this.allUnits[randomIndex];
+
 					// TakeHit
 					if (defenderTargetedUnit.IsAlive && attackerUnit.Damage > defenderTargetedUnit.minApplicableDamage)
 					{
@@ -211,7 +214,12 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 						if (defenderTargetedUnit.hp <= 0)
 						{
 							defenderTargetedUnit.IsAlive = false;
-							defenderUnit.MarkAsExplodedNextRound(defenderTargetedUnit.Index);
+							//MarkAsExplodedNextRound
+							var unitIndex = defenderTargetedUnit.Index;
+							this.aliveUnitStatusesNextRound[unitIndex] = false;
+							this.aliveUnitsNextRoundCount--;
+							this.explodedUnitIndexes[this.explodedUnitIndexesNextIndex++] = unitIndex;
+
 						}
 					}
 
@@ -219,23 +227,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 
 					var rapidFire = rapidFireTable[attackerUnitTypeValue, (int)defenderTargetedUnit.UnitType];
 					shouldAttackAgain = rapidFire != 0 && randomizer.Next(rapidFire) < (rapidFire - 1);
-				} 
+				}
 				while (shouldAttackAgain);
 			}
-		}
-
-		public void MarkAsExplodedNextRound(int unitIndex)
-		{
-			this.aliveUnitStatusesNextRound[unitIndex] = false;
-			this.aliveUnitsNextRoundCount--;
-			this.explodedUnitIndexes[this.explodedUnitIndexesNextIndex++] = unitIndex;
-		}
-
-		public Unit GetRandomAliveUnit(int aliveUnitsAvailableIndexes)
-		{
-			var randomIndex = this.aliveUnitsCurrentRoundIndexes[this.randomizer.Next(aliveUnitsAvailableIndexes + 1)];
-
-			return this.allUnits[randomIndex];
 		}
 
 		public double TacticalPower()

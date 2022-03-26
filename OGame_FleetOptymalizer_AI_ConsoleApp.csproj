@@ -89,7 +89,6 @@
     <Compile Include="Game\Interfaces\ISimulationResult.cs" />
     <Compile Include="Game\Interfaces\ISimulationResultFactory.cs" />
     <Compile Include="Game\Interfaces\IUnitFactory.cs" />
-    <Compile Include="Game\Interfaces\IUnitForces.cs" />
     <Compile Include="Game\Interfaces\IUnitForcesFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

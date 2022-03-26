@@ -18,7 +18,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.simulationResultFactory = new SimulationResultFactory();
 		}
 
-		public ISimulationResult RunSimulation(IInputData inputData, IUnitForces attackerFleet, IUnitForces defenderUnits)
+		public ISimulationResult RunSimulation(IInputData inputData, UnitForces attackerFleet, UnitForces defenderUnits)
 		{
 			var combatResults = new List<ICombatResult>();
 
@@ -37,8 +37,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 		private ISimulationResult GetSimulationResult(
 			IInputData inputData,
 			List<ICombatResult> combatResults,
-			IUnitForces attackerFleet,
-			IUnitForces defenderUnits
+			UnitForces attackerFleet,
+			UnitForces defenderUnits
 			)
 		{
 			var simulationResult = this.simulationResultFactory.CreateEmpty();
@@ -52,12 +52,12 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return simulationResult;
 		}
 
-		private double GetAttackerFleetToDefenderRatio(IUnitForces attackerFleet, IUnitForces defenderUnits)
+		private double GetAttackerFleetToDefenderRatio(UnitForces attackerFleet, UnitForces defenderUnits)
 		{
 			return attackerFleet.TacticalPower() / defenderUnits.TacticalPower();
 		}
 
-		private ICombatResult RunSingleSimulation(IInputData inputData, IUnitForces attackerFleet, IUnitForces defenderUnits)
+		private ICombatResult RunSingleSimulation(IInputData inputData, UnitForces attackerFleet, UnitForces defenderUnits)
 		{
 			var round = 0;
 
@@ -67,8 +67,8 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				)
 			{
 				//Console.WriteLine($"Round {round}");
-				defenderUnits.HitButDoNotUpdate(attackerFleet);
-				attackerFleet.HitButDoNotUpdate(defenderUnits);
+				defenderUnits.TakeHitButDoNotUpdate(attackerFleet);
+				attackerFleet.TakeHitButDoNotUpdate(defenderUnits);
 
 				attackerFleet.EndRound();
 				defenderUnits.EndRound();
@@ -84,14 +84,14 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				);
 		}
 
-		private int GetFlightTime(IUnitForces attackerFleet, IInputData inputData)
+		private int GetFlightTime(UnitForces attackerFleet, IInputData inputData)
 		{
 			//return (int)(10 + 3500 * Math.Sqrt((double)10 * CalculationHelper.GetDistanceBetweenPlayers(inputData) / attackerFleet.FleetSpeed));
 			// For now slimple slowest unit value will be enough
 			return attackerFleet.FleetSpeed;
 		}
 
-		private Resources CalculateAttackerProfit(IInputData inputData, WinnerType winnerType, IUnitForces attackerFleet, IUnitForces defenderUnits)
+		private Resources CalculateAttackerProfit(IInputData inputData, WinnerType winnerType, UnitForces attackerFleet, UnitForces defenderUnits)
 		{
 			var stolenResources = winnerType == WinnerType.Attacker
 				? this.GetStolenResources(inputData, attackerFleet)
@@ -104,7 +104,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				;
 		}
 
-		private Resources GetStolenResources(IInputData inputData, IUnitForces attackerFleet)
+		private Resources GetStolenResources(IInputData inputData, UnitForces attackerFleet)
 		{
 			var attackerResourcesCapacity = attackerFleet.GetFleetResourcesCapacity();
 
@@ -118,7 +118,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return availableResources.GetResourcesBasedOnCapacity(attackerResourcesCapacity);
 		}
 
-		private WinnerType ChooseWinner(int round, IUnitForces attackerFleet, IUnitForces defenderUnits)
+		private WinnerType ChooseWinner(int round, UnitForces attackerFleet, UnitForces defenderUnits)
 		{
 			var didBothSurvieBattle = round == 6 && attackerFleet.HasUnitsLeft() && defenderUnits.HasUnitsLeft();
 			var didBothLostBattle = !attackerFleet.HasUnitsLeft() && !defenderUnits.HasUnitsLeft();

@@ -16,7 +16,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			this.unitFactory = new UnitFactory();
 		}
 
-		public IUnitForces Create(IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
+		public UnitForces Create(IInputData inputData, IInputPlayerData inputPlayerData, IGameData gameData)
 		{
 			var units = new List<Unit>();
 			var unitTypesRepresentatives = new List<Unit>();
@@ -45,7 +45,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return new UnitForces(gameData, units, unitTypesRepresentatives);
 		}
 
-		public IUnitForces CreateDefender(IInputData inputData, IGameData gameData)
+		public UnitForces CreateDefender(IInputData inputData, IGameData gameData)
 		{
 			var units = new List<Unit>();
 			var unitTypesRepresentatives = new List<Unit>();
@@ -73,7 +73,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 			return new UnitForces(gameData, units, unitTypesRepresentatives);
 		}
 
-		public IUnitForces CreateAttacker(IInputData inputData, Fleet fleet, IGameData gameData)
+		public UnitForces CreateAttacker(IInputData inputData, Fleet fleet, IGameData gameData)
 		{
 			var units = new List<Unit>();
 			var unitTypesRepresentatives = new List<Unit>();
