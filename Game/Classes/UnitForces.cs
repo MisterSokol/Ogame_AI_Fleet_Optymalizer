@@ -173,7 +173,32 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Classes
 				do
 				{
 					defenderTargetedUnit = defenderUnit.GetRandomAliveUnit(aliveDefenderUnitAvailableIndexes);
-					defenderTargetedUnit.TakeHit(this.randomizer, attackerUnit.Damage, defenderUnit);
+					// TakeHit
+					if (defenderTargetedUnit.IsAlive && attackerUnit.Damage > defenderTargetedUnit.minApplicableDamage)
+					{
+						if (attackerUnit.Damage > defenderTargetedUnit.shieldValue)
+						{
+							defenderTargetedUnit.HP = defenderTargetedUnit.hp - (attackerUnit.Damage - defenderTargetedUnit.shieldValue);
+							defenderTargetedUnit.ShieldValue = 0;
+						}
+						else
+						{
+							defenderTargetedUnit.ShieldValue = defenderTargetedUnit.shieldValue - attackerUnit.Damage;
+						}
+
+						if (defenderTargetedUnit.hp > 0 && defenderTargetedUnit.maxHpPercentage <= 70 && randomizer.Next0to100() < (100 - defenderTargetedUnit.maxHpPercentage))
+						{
+							defenderTargetedUnit.HP = 0;
+						}
+
+						if (defenderTargetedUnit.hp <= 0)
+						{
+							defenderTargetedUnit.IsAlive = false;
+							defenderUnit.MarkAsExplodedNextRound(defenderTargetedUnit.Index);
+						}
+					}
+
+					//
 
 					var rapidFire = rapidFireTable[attackerUnitTypeValue, (int)defenderTargetedUnit.UnitType];
 					shouldAttackAgain = rapidFire != 0 && randomizer.Next(rapidFire) < (rapidFire - 1);
