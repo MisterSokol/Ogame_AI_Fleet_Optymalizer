@@ -24,12 +24,10 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		private readonly long profitMaxFitnessValue;
 		private readonly int fleetSpeedMinFitnessValue;
 		private readonly int fleetSpeedMaxFitnessValue;
-		//private readonly int fuelMinFitnessValue;
-		//private readonly int fuelMaxFitnessValue;
 
-		private List<Individual> generation;
-		private UnitForces defenderUnitForces;
-		private object locker;
+		private readonly List<Individual> generation;
+		private readonly UnitForces defenderUnitForces;
+		private readonly object locker;
 		private int nextIndividualIndex;
 
 		public ThreadFitnessCalculation(
@@ -66,7 +64,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 		public void Calculate()
 		{
-			//Individual bestThreadIndividual = null;
 			Individual nextIndividual;
 
 			while (true)
@@ -75,8 +72,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 				{
 					if (this.nextIndividualIndex < this.generation.Count)
 					{
-						//Console.WriteLine($"Calculating Fitness for indivisual number: {this.nextIndividualIndex}");
-
 						nextIndividual = this.generation[this.nextIndividualIndex];
 						this.nextIndividualIndex++;
 					}
@@ -87,14 +82,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 				}
 
 				this.CalculateFitness(nextIndividual);
-
-				//if (bestThreadIndividual == null || nextIndividual.FitnessValue > bestThreadIndividual.FitnessValue)
-				//{
-				//	bestThreadIndividual = nextIndividual;
-				//}
 			}
-
-			//return bestThreadIndividual;
 		}
 
 		private void CalculateFitness(Individual individual)
@@ -109,7 +97,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 			var attackerFleetToDefenderRatio = this.GetAttackerFleetToDefenderRatio(individualUnitForces, defenderUnitForcesForSimulation);
 
-			if (this.CanDoTacticalRetreat(attackerFleetToDefenderRatio, individualUnitForces, defenderUnitForces))
+			if (this.CanDoTacticalRetreat(attackerFleetToDefenderRatio))
 			{
 				defenderUnitForcesForSimulation.PerformTacticalRetreat();
 			}
@@ -121,7 +109,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			individual.SimulationResult = simulationResult;
 		}
 
-		private bool CanDoTacticalRetreat(double attackerFleetToDefenderRatio, UnitForces attackerFleet, UnitForces defenderUnits)
+		private bool CanDoTacticalRetreat(double attackerFleetToDefenderRatio)
 		{
 			var retreatRatio = this.configuration.TacticalRetreatAt3Ratio
 				? 3
@@ -144,8 +132,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			total += this.GetWinFitnessValue(simulationResult) * this.configuration.WinPriority;
 			total += this.GetProfitFitnessValue(simulationResult) * this.configuration.ProfitPriority;
 			total += this.GetFleetSpeedFitnessValue(simulationResult) * this.configuration.FleetSpeedPriority;
-
-			//total = this.ApplyRatioPenalty(total, simulationResult);
 
 			return total;
 		}
@@ -186,7 +172,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		private int GetWinMinFitnessValue()
 		{
 			var multipliers = new List<int>() { this.configuration.DefenderWinFitnessMultiplier, this.configuration.DrawFitnessMultiplier, this.configuration.AttackerWinFitnessMultiplier };
-			
+
 			return 100 * multipliers.Min();
 		}
 
@@ -198,7 +184,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 		private long GetProfitMinFitnessValue()
 		{
-			var lostResources = this.attackerMaxForces.GetDebrisResources(true) 
+			var lostResources = this.attackerMaxForces.GetDebrisResources(true)
 				- this.attackerMaxForces.GetLostResources(true)
 				- this.attackerMaxForces.GetFlightCost(this.input, true);
 

@@ -37,10 +37,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		{
 			this.randomFitnessRollingTable = new List<long>(Enumerable.Repeat(0L, configuration.GenerationSize + 1));
 			this.maxFleet = this.GetMaxFleet(input);
-			//Console.WriteLine("Start creating Defender");
+
 			var defenderUnitForces = this.unitForcesFactory.CreateDefender(input, gameData);
-			//Console.WriteLine("End creating Defender");
-			var generation = this.InitializeFirstGeneration(configuration, input);
+			var generation = this.InitializeFirstGeneration(configuration);
 			Individual theBestIndividual;
 			var generationCounter = 0;
 
@@ -61,16 +60,14 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 				this.ResetRandomFitnessRollingTable(configuration, generation);
 
-				generation = this.CreateNewGeneration(configuration, input, generation, theBestIndividual);
+				generation = this.CreateNewGeneration(configuration, generation, theBestIndividual);
 
 				GC.Collect();
 			}
-			while (!this.IsTheStopCaseMet(configuration, generation, theBestIndividual));
+			while (!this.IsTheStopCaseMet(configuration, theBestIndividual));
 
 			return this.GetOutputData(theBestIndividual);
 		}
-
-
 
 		private Individual CalculateFitnessValuesAndGetBestIndividual(IConfigurationData configuration, IInputData input, IGameData gameData, List<Individual> generation, UnitForces defenderUnitForces)
 		{
@@ -101,31 +98,6 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			}
 
 			return bestIndividual;
-
-			//Individual bestIndividual = generation[0];
-
-			//foreach (var individual in generation)
-			//{
-			//	Console.WriteLine($"Calculating Fitness for indivisual number: {generation.IndexOf(individual)}");
-			//	if (individual.FitnessValue != 0)
-			//	{
-			//		continue;
-			//	}
-
-			//	var individualUnitForces = this.unitForcesFactory.CreateAttacker(input, individual.Fleet, gameData);
-
-			//	var simulationResult = this.combatSimulator.RunSimulation(input, individualUnitForces, defenderUnitForces);
-
-			//	individual.FitnessValue = this.GetFitnessValue(configuration, simulationResult);
-			//	individual.SimulationResult = simulationResult;
-
-			//	if (individual.FitnessValue > bestIndividual.FitnessValue)
-			//	{
-			//		bestIndividual = individual;
-			//	}
-			//}
-
-			//return bestIndividual;
 		}
 
 		private Fleet GetMaxFleet(IInputData input)
@@ -167,19 +139,19 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			}
 		}
 
-		private List<Individual> CreateNewGeneration(IConfigurationData configuration, IInputData input, List<Individual> generation, Individual theBestIndividual)
+		private List<Individual> CreateNewGeneration(IConfigurationData configuration, List<Individual> generation, Individual theBestIndividual)
 		{
-			var newGeneration = this.PrepareNewGeneration(configuration, generation, theBestIndividual);
+			var newGeneration = this.PrepareNewGeneration(configuration, theBestIndividual);
 
 			while (newGeneration.Count < configuration.GenerationSize)
 			{
 				if (this.randomizer.Next0to100() < configuration.MutationChanceProbablityPercentage)
 				{
-					newGeneration.Add(this.PerformMutation(configuration, input, generation));
+					newGeneration.Add(this.PerformMutation(configuration, generation));
 				}
 				else
 				{
-					newGeneration.Add(this.PerformCrossover(configuration, input, generation));
+					newGeneration.Add(this.PerformCrossover(generation));
 				}
 			}
 
@@ -194,22 +166,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			};
 		}
 
-		private Individual GetTheBestIndividual(IConfigurationData configuration, List<Individual> generation)
-		{
-			var bestIndividual = generation.First();
-
-			for (int i = 1; i < generation.Count; i++)
-			{
-				if (bestIndividual.FitnessValue < generation[i].FitnessValue)
-				{
-					bestIndividual = generation[i];
-				}
-			}
-
-			return bestIndividual;
-		}
-
-		private Individual PerformMutation(IConfigurationData configuration, IInputData input, List<Individual> generation)
+		private Individual PerformMutation(IConfigurationData configuration, List<Individual> generation)
 		{
 			var fleetToMutate = this.PickRandomIndividualBasedOnFitness(generation).Fleet.Copy();
 			var unitTypeToMutate = (UnitType)this.randomizer.Next((int)UnitType.SmallCargo, (int)UnitType.Pathfinder + 1);
@@ -256,7 +213,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			return new Individual(fleetToMutate, 0);
 		}
 
-		private Individual PerformCrossover(IConfigurationData configuration, IInputData input, List<Individual> generation)
+		private Individual PerformCrossover(List<Individual> generation)
 		{
 			var leftParentFleet = this.PickRandomIndividualBasedOnFitness(generation).Fleet;
 			var rightParentFleet = this.PickRandomIndividualBasedOnFitness(generation).Fleet;
@@ -272,7 +229,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			return new Individual(childFleet, 0);
 		}
 
-		private List<Individual> PrepareNewGeneration(IConfigurationData configuration, List<Individual> generation, Individual theBestIndividual)
+		private List<Individual> PrepareNewGeneration(IConfigurationData configuration, Individual theBestIndividual)
 		{
 			return new List<Individual>(configuration.GenerationSize)
 			{
@@ -280,7 +237,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			};
 		}
 
-		private bool IsTheStopCaseMet(IConfigurationData configuration, List<Individual> generation, Individual theBestIndividual)
+		private bool IsTheStopCaseMet(IConfigurationData configuration, Individual theBestIndividual)
 		{
 			if (theBestIndividual.FitnessValue > this.bestFitness)
 			{
@@ -295,7 +252,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			return this.noChangeStreakCounter >= configuration.MaxNumberOfGenerationsWithoutFitnessImprovement;
 		}
 
-		private List<Individual> InitializeFirstGeneration(IConfigurationData configuration, IInputData input)
+		private List<Individual> InitializeFirstGeneration(IConfigurationData configuration)
 		{
 			var randomGeneration = new List<Individual>(configuration.GenerationSize)
 			{
