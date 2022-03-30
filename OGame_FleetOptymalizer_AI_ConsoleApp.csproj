@@ -82,14 +82,13 @@
     <Compile Include="Game\Enums\UnitType.cs" />
     <Compile Include="Game\Enums\WinnerType.cs" />
     <Compile Include="Game\Helpers\CalculationHelper.cs" />
+    <Compile Include="Game\Helpers\FastRandom.cs" />
     <Compile Include="Game\Interfaces\ICombatResult.cs" />
     <Compile Include="Game\Interfaces\ICombatResultFactory.cs" />
     <Compile Include="Game\Interfaces\ICombatSimulator.cs" />
     <Compile Include="Game\Interfaces\ISimulationResult.cs" />
     <Compile Include="Game\Interfaces\ISimulationResultFactory.cs" />
-    <Compile Include="Game\Interfaces\IUnit.cs" />
     <Compile Include="Game\Interfaces\IUnitFactory.cs" />
-    <Compile Include="Game\Interfaces\IUnitForces.cs" />
     <Compile Include="Game\Interfaces\IUnitForcesFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

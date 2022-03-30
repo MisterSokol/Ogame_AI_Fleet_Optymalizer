@@ -23,7 +23,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Classes
 
 		public IGameData GetGameData()
 		{
-			return JsonConvert.DeserializeObject<GameData>(File.ReadAllText(gameDataPath));
+			var gameData = JsonConvert.DeserializeObject<GameData>(File.ReadAllText(gameDataPath)); ;
+
+			gameData.LoadRapidFire();
+
+			return gameData;
 		}
 
 		public void SaveOutput(IOutputData outputData, string path = null)

@@ -10,6 +10,11 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Game.Helpers
 			return (int)Math.Round(value * (double)percentage / 100);
 		}
 
+		public static long GetLongPercentageValue(long value, int percentage)
+		{
+			return (int)Math.Round(value * (double)percentage / 100);
+		}
+
 		public static int GetDistanceBetweenPlayers(IInputData inputData)
 		{
 			if (inputData.AttackerData.GalaxyNumber != inputData.DefenderData.GalaxyNumber)
