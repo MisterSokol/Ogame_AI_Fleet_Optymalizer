@@ -6,6 +6,7 @@
 	"ChanceOfMutationToMaxPercentage": 5,
 	"MinMutationModificationPercentage": 1,
 	"MaxMutationModificationPercentage": 20,
+	"NotRandomInitialIndividuals": 3,
 	"ThreadNumber": 12,
 	"AttackerWinFitnessMultiplier": 6,
 	"DrawFitnessMultiplier": 3,

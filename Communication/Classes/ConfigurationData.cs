@@ -11,6 +11,7 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.Communication.Classes
 		public int ChanceOfMutationToMaxPercentage { get; set; }
 		public int MinMutationModificationPercentage { get; set; }
 		public int MaxMutationModificationPercentage { get; set; }
+		public int NotRandomInitialIndividuals { get; set; }
 		public int ThreadNumber { get; set; }
 
 		public int AttackerWinFitnessMultiplier { get; set; }

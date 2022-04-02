@@ -24,7 +24,24 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 		private Fleet maxFleet;
 		private int bestFitness;
 		private int noChangeStreakCounter;
-
+		private static UnitType[] fleetUnits = new[]{
+			UnitType.SmallCargo,
+			UnitType.LargeCargo,
+			UnitType.LightFighter,
+			UnitType.HeavyFighter,
+			UnitType.Cruiser,
+			UnitType.Battleship,
+			UnitType.ColonyShip,
+			UnitType.Recycler,
+			UnitType.Probe,
+			UnitType.Bomber,
+			UnitType.Destroyer,
+			UnitType.Deathstar,
+			UnitType.Battlecruiser,
+			UnitType.Reaper,
+			UnitType.Pathfinder,
+		}
+		;
 		public EvolutionaryAlgorithm()
 		{
 			this.combatSimulator = new CombatSimulator();
@@ -254,10 +271,9 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 
 		private List<Individual> InitializeFirstGeneration(IConfigurationData configuration)
 		{
-			var randomGeneration = new List<Individual>(configuration.GenerationSize)
-			{
-				new Individual(this.maxFleet.Copy(), fitnessValue: 0)
-			};
+			var randomGeneration = new List<Individual>(configuration.GenerationSize);
+
+			randomGeneration.AddRange(this.GetNotRandomIndividuals(configuration));
 
 			while (randomGeneration.Count < configuration.GenerationSize)
 			{
@@ -272,6 +288,43 @@ namespace OGame_FleetOptymalizer_AI_ConsoleApp.AI.Classes
 			}
 
 			return randomGeneration;
+		}
+
+		private IEnumerable<Individual> GetNotRandomIndividuals(IConfigurationData configuration)
+		{
+			if (configuration.NotRandomInitialIndividuals == 0)
+			{
+				return Enumerable.Empty<Individual>();
+			}
+
+			var nonRandomIndividuals = new List<Individual>()
+			{
+				new Individual(this.maxFleet.Copy(), 0)
+			};
+
+			for (int i = 1; i < configuration.NotRandomInitialIndividuals; i++)
+			{
+				var percentageOfMaxValue = (double)i / configuration.NotRandomInitialIndividuals * 100;
+
+				nonRandomIndividuals.Add(new Individual()
+				{
+					Fleet = this.GetPercentageOfMaxFleet((int)percentageOfMaxValue)
+				});
+			}
+
+			return nonRandomIndividuals;
+		}
+
+		private Fleet GetPercentageOfMaxFleet(int percentage)
+		{
+			var fleet = new Fleet();
+
+			foreach (var unitType in fleetUnits)
+			{
+				fleet.FleetUnits[unitType] = CalculationHelper.GetPercentageValue(this.maxFleet.FleetUnits[unitType], percentage);
+			}
+
+			return fleet;
 		}
 
 		private Individual PickRandomIndividualBasedOnFitness(List<Individual> generation)
